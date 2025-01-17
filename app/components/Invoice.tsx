@@ -55,7 +55,7 @@ function Invoice({ref}:{ref:React.Ref<HTMLElement>}) {
                     value={'July 12th, 2024'}                 
                 /> */}
 
-                    <table className='table text-xs w-[50%] mx-auto'>
+                    <table className='table text-xs md:w-[50%] mx-auto'>
                         <thead>
                             <th></th>
                             <th></th>

@@ -19,7 +19,7 @@ export default function AppModalDialog({open, title, children, onClick, btnTitle
                 <DialogPanel
                     transition
                     className={`relative top-8 transform overflow-hidden rounded-lg bg-white-light shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 
-                    data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 ${className} mx-auto sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95`}
+                    data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 ${className} w-full mx-auto sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95`}
                 >
                     <DialogTitle
                         className='py-4 text-black font-semibold'
