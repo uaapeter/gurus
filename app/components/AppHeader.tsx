@@ -143,7 +143,7 @@ function AppHeader({user, token}:{user: any, token:string}) {
                     </div>
 
                     <Avatar 
-                        sx={{ width: 40, height: 40 }} 
+                        sx={{ width: 30, height: 30 }} 
                         sizes='small' src='/logo.png' 
                     />
                 </div>

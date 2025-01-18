@@ -33,7 +33,7 @@ async function SignIn() {
                         height={100}
                         src='/logo.png' 
                         alt='logo'
-                        // className='h-auto w-auto'
+                        className='h-auto w-auto'
                     />
                 </div>
                

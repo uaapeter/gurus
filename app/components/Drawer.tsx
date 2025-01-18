@@ -7,6 +7,7 @@ import { Menu, Sidebar, MenuItem, useProSidebar, sidebarClasses} from 'react-pro
 import { usePathname } from 'next/navigation'
 import {  ShoppingCart } from '@mui/icons-material'
 import { handleLogOut } from '../server/userServer'
+import Image from 'next/image'
 
 function Drawer({right}: 
     {right: string}) {
@@ -39,12 +40,12 @@ function Drawer({right}:
                 // component={<Link href={right == 'Admin' ? '/' : '/home'} />}
                 className='text-sm hover:text-primary'
                 icon={
-                    <img 
-                        width={300}
-                        height={300}
+                    <Image 
+                        width={100}
+                        height={100}
                         src='/logo.png'
                         onClick={() => collapseSidebar()}
-                        className='object-cover' alt={'logo'}                    
+                        className='h-auto w-auto' alt={'logo'}                    
                     />
                 }
             >

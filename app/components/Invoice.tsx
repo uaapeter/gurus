@@ -6,6 +6,7 @@ import { selectSelectedOrder } from '../reducers/orderReducer'
 import moment from 'moment'
 import QRCode from 'react-qr-code'
 import { selectStaff } from '../reducers/userReducer'
+import Image from 'next/image'
 
 
 function Invoice({ref}:{ref:React.Ref<HTMLElement>}) {
@@ -18,12 +19,12 @@ function Invoice({ref}:{ref:React.Ref<HTMLElement>}) {
             <div
                 className='flex flex-col text-xs items-center justify-center'
             >
-                <img 
+                <Image 
                     width={100}
                     height={100}
                     src='/logo.png'
                     alt='logo'
-                    // className='w-auto h-auto:'
+                    className='w-auto h-auto'
                 />
                 <p className='text-lg font-semibold uppercase'>{staff?.store?.storeName}</p>
                 <p>Address: {staff?.store?.storeAddress}</p>
