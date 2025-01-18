@@ -18,7 +18,7 @@ export default function GlobalError({
                 <div
                     className='p-8 flex flex-col items-center justify-center gap-4'
                 >
-                    <h2 className='text-red-500 text-lg'>Something went wrong! {error.message}</h2>
+                    <h2 className='text-red-500 text-lg'>{error.message}</h2>
                     <button
                         onClick={
                         // Attempt to recover by trying to re-render the segment
