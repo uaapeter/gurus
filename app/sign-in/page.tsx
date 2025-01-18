@@ -127,13 +127,10 @@ async function SignIn() {
                                 text-gray-dark
                             '
                         >
-                            Provide your account details
+                            Provide your login details
                         </span>
-                    </div>
-                       
-                    
+                    </div>                    
                     <LogInForm  />
-
 
                 </div>
 

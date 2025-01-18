@@ -163,6 +163,7 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                             <SelectInput 
                                 options={[
                                     {key: 'Admin', keyValue:'Admin'},
+                                    {key: 'Manager', keyValue:'Manager'},
                                     {key: 'Cashier', keyValue:'Cashier'}
                                 ]}
                                 name='role'

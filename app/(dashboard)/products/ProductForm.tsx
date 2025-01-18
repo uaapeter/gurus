@@ -40,7 +40,7 @@ function ProductForm({token, stores, categories, suppliers, right} : productType
                 </p>
 
                 {
-                    right == 'Admin' ?
+                    right == 'Admin' || 'Manager' ?
                     <Button 
                         title={
                             <div
