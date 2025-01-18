@@ -12,7 +12,6 @@ async function page() {
     const hasCookie = cookieStore.has('session')
     if(!hasCookie) return redirect('/sign-in')
     const session = cookieStore.get('session')
-    const right = cookieStore.get('right')?.value
     // if(right !=='Admin') return redirect('/')
 
     const suppliers = await getSuppliers(session?.value)

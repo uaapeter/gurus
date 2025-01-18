@@ -2,17 +2,18 @@
 import { toTitleCase } from '@/app/actions/textAction'
 import LineThrough from '@/app/components/LineThrough'
 import { setSelectedProduct } from '@/app/reducers/productReducer'
-import { setIsOpen } from '@/app/reducers/uiReducer'
+import { selectSearch, setIsOpen } from '@/app/reducers/uiReducer'
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { IconButton } from '@mui/material'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 
 function ProductTable({products, right}: {products:any[], right:any}) {
     const dispatch = useDispatch()
+    const search = useSelector(selectSearch)
     return (
         <div className="relative overflow-x-auto py-4">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 bg-white-light">
@@ -68,7 +69,26 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                 
                 <tbody>
                     {
-                        products?.flatMap((item:any, index:number) => {
+                        products?.filter((item:any) =>{
+                            if(search == '') {
+                                return item
+                            }else if(item?.barcode?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.productName?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.category.categoryName?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.expireDate?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.sellingPrice?.toString().includes(search.toString())){
+                                return item
+                            }else if(item?.cartonQty?.toString().includes(search.toString())){
+                                return item
+                            }else if(item?.store?.storeName?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }
+                        })
+                        ?.flatMap((item:any, index:number) => {
                             return (
                                 <Fragment key={(index+4)*6}>
                                     <tr

@@ -3,8 +3,8 @@ import React from 'react'
 import OrderTable from '../../components/OrderTable'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { getOrders } from '@/app/server/orderServer'
-import OrderHeader from './OrderHeader'
+import { getOrdersOnCredit } from '@/app/server/orderServer'
+import CreditorsHeader from './CreditorsHeader'
 
 async function page() {
     const cookieStore = await cookies()
@@ -13,11 +13,11 @@ async function page() {
     const session = cookieStore.get('session')
 
     const result = await Promise.allSettled([   
-        getOrders(session?.value),
+        getOrdersOnCredit(session?.value),
     ])
     return (
         <PageWrapper>
-            <OrderHeader />
+            <CreditorsHeader />
             <OrderTable orders={result[0].status == 'fulfilled' ? result[0].value : []} />
         </PageWrapper>
     )

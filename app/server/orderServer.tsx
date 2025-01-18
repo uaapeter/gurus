@@ -50,6 +50,19 @@ export const getOrders = async (token: any) =>{
     return data.orders
 }
 
+export const getOrdersOnCredit = async (token: any) =>{
+  
+      
+    const {data, status} = await api.get(`/order/unpaid`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+
+    if(status !== 200 ) throw new Error(data.message)
+       
+    return data.orders
+}
 
 export const getCurrentSales = async (token: any) =>{
   

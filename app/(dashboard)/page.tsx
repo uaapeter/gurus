@@ -66,7 +66,7 @@ async function page() {
                        
                     } 
                     subTitle={sumTotal(currentSales, 'amount')} 
-                    url={'/'}      
+                    url={'/orders'}      
                     className=' bg-primary/35'          
                 
                 />
@@ -98,7 +98,7 @@ async function page() {
                     } 
                    
                     subTitle={0} 
-                    url={'/'}      
+                    url={'/orders'}      
                     className=' bg-orange-100'          
                 
                 />
@@ -113,7 +113,7 @@ async function page() {
                     } 
                    
                     subTitle={products.length} 
-                    url={'/'}      
+                    url={'/products'}      
                     className=' bg-blue-light'          
                 
                 />

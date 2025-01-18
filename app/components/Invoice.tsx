@@ -186,7 +186,7 @@ function Invoice({ref}:{ref:React.Ref<HTMLElement>}) {
                 <div
                     className='flex items-center justify-center'
                 >
-                    <p className='text-xs font-normal text-black'>Copyright &copy;  {new Date().getFullYear()} JOCTEC POS </p>
+                    <p className='text-xs font-normal text-black'>Copyright &copy;  {new Date().getFullYear()} whastcom.com POS </p>
                 </div>
             </div>
         </main>

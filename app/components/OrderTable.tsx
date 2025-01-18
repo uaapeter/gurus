@@ -206,7 +206,7 @@ function OrderTable({orders}: {orders:any[]}) {
                 <div
                     className='w-full items-center flex justify-center text-sm py-4'
                 >
-                    <p>No Data Availabe In Table</p>
+                    <p className='text-red-500 text-sm'>No Data Availabe In Table</p>
                 </div>
                 : ''
             }
