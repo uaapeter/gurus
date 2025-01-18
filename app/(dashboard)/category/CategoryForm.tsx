@@ -3,6 +3,7 @@ import AppModalDialog from '@/app/components/AppModalDialog'
 import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
+import SearchInput from '@/app/components/SearchInput'
 import { selectSelectedCategory, setSelectedCategory } from '@/app/reducers/categoryReducer'
 import { selectIsLoading, selectIsOpen, setIsLoading, setIsOpen } from '@/app/reducers/uiReducer'
 import { createCategory } from '@/app/server/categoryServer'
@@ -27,6 +28,15 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                 >
                     Product Category List
                 </p>
+
+                <div
+                    className='flex-1 mx-10'
+                >
+                    <SearchInput 
+                        setSearh={() => {}} 
+                        placeholder='Search by name...' 
+                    />
+                </div>
 
                 {
                     right  == 'Admin' || 'Manager' ?
@@ -53,7 +63,7 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                 open={open}
                 setOpen={() => dispatch(setIsOpen(!open))} 
                 title='Add Category' 
-                className='md:max-w-1xl'
+                className='md:max-w-3xl max-w-7xl'
                 onClick={() => {}}
             >
                 <form  action={(formData: FormData) => {

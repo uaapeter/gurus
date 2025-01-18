@@ -1,16 +1,17 @@
 'use client'
 import { toTitleCase } from '@/app/actions/textAction'
 import { setSelectedCategory } from '@/app/reducers/categoryReducer'
-import { setIsOpen } from '@/app/reducers/uiReducer'
+import { selectSearch, setIsOpen } from '@/app/reducers/uiReducer'
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { IconButton } from '@mui/material'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
     const dispatch = useDispatch()
+    const search = useSelector(selectSearch)
     return (
         <div className="relative overflow-x-auto py-4">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 bg-white-light">
@@ -40,7 +41,14 @@ function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
                 
                 <tbody>
                 {
-                        categories?.flatMap((item:any, index:number) => {
+                        categories?.filter((item:any) =>{
+                            if(search == '') {
+                                return item
+                            }else if(item?.categoryName?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }})
+                        
+                        ?.flatMap((item:any, index:number) => {
                             return (
                                 <Fragment key={(index+4)*6}>
                                     <tr
