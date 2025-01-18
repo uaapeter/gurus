@@ -137,7 +137,7 @@ function Drawer({right}:
                 Discount
             </MenuItem>
             {
-                right !== 'Admin' ?
+                right !== 'Cashier' ?
                     <MenuItem
                     className={`text-sm hover:text-primary ${path ==='pos' && 'bg-gray-100 text-primary'}`}
                     component={<Link href={`/pos`} />}
