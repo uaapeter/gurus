@@ -21,46 +21,46 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                         <td scope="col" className="text-xs font-semibold px-1 border-l-0">
                             S/N
                         </td>
-                        <th scope="col" className="px-6 text-xs py-2">
+                        <th scope="col" className="text-xs py-2">
                             Barcode
                         </th>
                     
-                        <th scope="col" className="px-6 text-xs text-center">
+                        <th scope="col" className="text-xs">
                             Product
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             Category
                         </th>
                     
                         
-                        <th scope="col" className="px-6 text-xs text-right bg-red-50">
+                        <th scope="col" className="text-xs bg-red-50 text-center">
                            Expire
                         </th>
-                        <th scope="col" className="px-6 text-xs bg-green-50">
+                        <th scope="col" className="text-xs bg-green-50">
                             <LineThrough/> Price
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             In Stock
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             Office
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             Status
                         </th>
                         {
                             right == 'Admin' ?
-                            <th scope="col" className="px-6 text-xs">
+                            <th scope="col" className="text-xs text-center">
                                 Actions
                             </th> 
                             :
                             <></>
                         }
                         {/* 
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             Date joined
                         </th> 
-                        <th scope="col" className="px-6 text-xs text-center"> 
+                        <th scope="col" className="text-xs text-center"> 
                             Action
                         </th>*/}
                     </tr>
@@ -77,28 +77,28 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                                         <td className='text-success'>
                                             {index+1}
                                         </td>
-                                        <td scope="row" className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <td scope="row" className="py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {toTitleCase(item?.barcode)}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.productName}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.category?.categoryName}
                                         </td>
-                                        <td className="px-2 py-3 text-center bg-red-50">
+                                        <td className="py-3 bg-red-50">
                                             { moment(item?.expireDate).format('LL')}
                                         </td>
-                                        <td className="px-2 py-3 text-center bg-green-50">
+                                        <td className="py-3 bg-green-50">
                                             {item?.sellingPrice?.toLocaleString()}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3 text-center">
                                             {item?.cartonQty}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.store?.storeName}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             <span
                                                 className={`${item?.status == 'Open' ? 'text-primary' : ''} ${item?.cartonQty > 1 ? 
                                                     'bg-primary text-white-light rounded text-xs px-1': 'bg-red-500 text-white-light rounded text-xs px-1'}`}
@@ -108,7 +108,7 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                                         </td>
                                         {
                                             right == 'Admin' ?
-                                            <td className="px-2 py-3 text-center">
+                                            <td className="py-3">
                                                 <div
                                                     className='flex items-center justify-center space-x-2'
                                                 >

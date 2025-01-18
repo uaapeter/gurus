@@ -21,35 +21,35 @@ function UserTable({users}: {users:any[]}) {
                         <td scope="col" className="text-xs font-semibold px-1 border-l-0">
                             S/N
                         </td>
-                        <th scope="col" className="px-6 text-xs py-2">
+                        <th scope="col" className="text-xs py-2">
                             Name
                         </th>
                     
-                        <th scope="col" className="px-6 text-xs text-center">
+                        <th scope="col" className="text-xs">
                             Username
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                            Phone
                         </th>
                     
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             E-mail
                         </th>
-                        <th scope="col" className="px-6 text-xs text-right bg-orange-50">
+                        <th scope="col" className="text-xs bg-orange-50">
                            Role
                         </th>
-                        <th scope="col" className="px-6 text-xs bg-green-50">
+                        <th scope="col" className="text-xs bg-green-50">
                             Store
                         </th>
                         
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs text-center">
                             Action
                         </th> 
                         {/* 
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             Date joined
                         </th> 
-                        <th scope="col" className="px-6 text-xs text-center"> 
+                        <th scope="col" className="text-xs text-center"> 
                             Action
                         </th>*/}
                     </tr>
@@ -68,37 +68,37 @@ function UserTable({users}: {users:any[]}) {
                                         >
                                             {index+1}
                                         </td>
-                                        <td scope="row" className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <td scope="row" className="py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {toTitleCase(item?.fullName)}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.username}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.phoneNumber}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.emailAddress}
                                         </td>
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.role}
                                         </td>
                                         
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3">
                                             {item?.store?.storeName}
                                         </td>
                                         
                                        
                                         
                                         
-                                        {/* <td className="px-2 py-3 text-center">
+                                        {/* <td className="py-3 text-center">
                                             <p
                                                 className={`${item?.status == 'Open' ? 'text-primary' : 'text-red-500'}`}
                                             >
                                                 {item?.status}
                                             </p>
                                         </td> */}
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="py-3 text-center">
                                             <div
                                                 className='flex items-center justify-center space-x-2'
                                             >
