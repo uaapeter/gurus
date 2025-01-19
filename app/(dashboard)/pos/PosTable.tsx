@@ -22,6 +22,7 @@ import { selectSelectedOrder, setSelectedOrder } from '@/app/reducers/orderReduc
 import BackDrop from '@/app/components/BackDrop'
 import AppChip from '@/app/components/AppChip'
 import { toTitleCase } from '@/app/actions/textAction'
+import {amtToWords} from '@/app/actions/amountTowords'
 
 function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsales:any[], token:string}) {
     const dispatch = useDispatch()
@@ -92,6 +93,7 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                 ...data,
                 orderType: 'SALE',
                 orderId,
+                amountInWords: amtToWords(sumTotal(cart, 'words')),
                 amount: data?.discount > 0 ? sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount : sumTotal(cart, 'total') ,
                 customer: {
                     customerName: data?.customerName,
@@ -228,6 +230,7 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
             unsubscribe()
      }, [callover])
 
+
     return (
         <div className="relative overflow-x-auto py-4">
             {
@@ -243,7 +246,7 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                         setPrint(!isPrint)
                         dispatch(setSelectedOrder(null))
                     }}
-                    className='max-w-7xl'
+                    className='md:max-w-3xl max-w-7xl'
                     onClick={() =>handlePrint()}
                     btnTitle={
                         <div
@@ -552,17 +555,18 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                     </tr>
                     <tr className='text-xs'>
                         <td colSpan={1} className='px-1 py-2 bg-white'>
-                           
+                        <div className='flex-1 justify-start '>
+                            <p className='text-primary text-lg'>
+                                { amtToWords(sumTotal(cart, 'words'))}
+                            </p>
+                        </div>
                         </td>
-                      
-                        {/* <td className='text-right text-black'>
-                            <p className='text-lg font-semibold'><LineThrough/> 0</p>
-                        </td> */}
-                        
+                                              
                         <td colSpan={5} className=' text-black text-right'>
                             <div
                                 className='py-4 space-x-4 flex w-full justify-end'   
                             >
+                                
                                 <Button 
                                     title={
                                         <div
