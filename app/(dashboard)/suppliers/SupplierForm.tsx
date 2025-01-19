@@ -1,22 +1,30 @@
 'use client'
 import AppModalDialog from '@/app/components/AppModalDialog'
+import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
 import { selectSelectedSupplier, setSelectedSupplier } from '@/app/reducers/supplierReducer'
-import { selectIsLoading, selectIsOpen, setIsLoading, setIsOpen } from '@/app/reducers/uiReducer'
+import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
 import { createSupplier } from '@/app/server/supplierServer'
 import { PencilSquareIcon, PlusCircleIcon, } from '@heroicons/react/24/solid'
 import { CircularProgress } from '@mui/material'
 
-import React from 'react'
+import React, { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
+const initialState = {
+    isLoading: false,
+    message: '',
+    success: ''
+}
 function SupplierForm({token}: {token:any}) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
-    const isLoading = useSelector(selectIsLoading) 
     const selectedSupplier = useSelector(selectSelectedSupplier)
+    const {pending} = useFormStatus()
+    const [state, formAction] = useActionState(createSupplier, initialState)
     return (
         <section>
             <div
@@ -51,17 +59,17 @@ function SupplierForm({token}: {token:any}) {
                 title='Add New Supplier' 
                 className='md:max-w-1xl max-w-7xl'
             >
-                <form action={(formData: FormData) => {
-                    dispatch(setIsLoading(true))
-                    createSupplier(formData, token)
-
-                    setTimeout(() => {
-                        dispatch(setIsLoading(false))
-                        dispatch(setIsOpen(!open))
-                    }, 2000);
-                }}
+                <form action={formAction}
                     className='px-4 py-6'
                 >
+                    {
+                        <AppSnackbar 
+                            severity='error'
+                            open={state?.message ? true : false} 
+                            message={state?.message} 
+                            position={'top'} 
+                        />
+                    }
                     <FlexRow
                         className='flex-col'
                     >
@@ -75,6 +83,8 @@ function SupplierForm({token}: {token:any}) {
                             value={selectedSupplier?.supplierName}
                         />
                         <input name='_id' value={selectedSupplier?._id} hidden />
+                        <input name='token' value={token} hidden />
+
                     </FlexRow>
                     <FlexRow
                         className='flex-col mt-4'
@@ -145,7 +155,7 @@ function SupplierForm({token}: {token:any}) {
                         className='mt-4'
                     >
                         <Button 
-                            disable={isLoading}
+                            disable={pending}
                             title={
                                 <div
                                     className='flex'
@@ -156,7 +166,7 @@ function SupplierForm({token}: {token:any}) {
                                     }
                                     <p>{selectedSupplier? 'Edit' : 'Submit'}</p>
                                     {
-                                        isLoading? <CircularProgress size={20} />: <></>
+                                        pending? <CircularProgress size={20} />: <></>
                                     }
                                 </div>
                             }

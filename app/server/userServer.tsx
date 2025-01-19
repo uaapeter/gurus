@@ -33,11 +33,12 @@ export const getUserById = async (id: string, token: any) =>{
 }
 
 
-export async function hanldeLogIn(formData:FormData) {
+export async function hanldeLogIn(prevState:any, formData:FormData) {
     'use server'
     let right
     try {
         const rawFormData = {
+            prevState,
             username: formData.get('username'),
             password: formData.get('password')
 
@@ -78,13 +79,15 @@ export async function hanldeLogIn(formData:FormData) {
             
         });
         right = data.role
+       
+        // return {message: 'Success'}
     } catch (error:any) {
-       if(error.response.data.message) throw new Error(error.response.data.message)
-       throw new Error('Error')
+       if(error.response.data.message) return {message: error.response.data.message}
+       return {message: 'Something went wrong '}
     }
 
-   if(right && right == 'Admin') return redirect('/')
-    redirect('/home')
+            if(right && right == 'Admin') return redirect('/')
+            return redirect('/home')
    
 
 }
@@ -156,10 +159,13 @@ export const getAllUsers = async (token:string | undefined) =>{
 }
 
 
-export async function createUser(formData:FormData, token:any) {
+export async function createUser(prevState:any, formData:FormData) {
 
     try {
+        
+        const token = formData.get('token')
         const rawFormData = {
+            prevState,
             _id: formData.get('_id'),
             username: formData.get('username'),
             fullName: formData.get('fullName'),
@@ -171,18 +177,18 @@ export async function createUser(formData:FormData, token:any) {
         }
 
         
-        const {data, status} = await api.post(`/user`, rawFormData, {
+        const { status} = await api.post(`/user`, rawFormData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
 
-        if(status !== 200 ) throw new Error(data.message)
+        if(status !== 200 ) return {message: 'Something went wrong'}
 
     } catch (error:any) {
         
-        if(error?.response?.data?.message)  throw new Error(error?.response?.data?.message)
-        throw new Error('Error')
+        if(error?.response?.data?.message)  return {message: error?.response?.data?.message}
+       return {message: 'Error: Something went wrong'}
     }
 
     revalidatePath('/users')

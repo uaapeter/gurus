@@ -27,6 +27,7 @@ async function page() {
         <Suspense fallback={<AppLoadingIndicator />}>
         <PageWrapper>
             <StoreForm 
+                token={session?.value}
                 users={result[1].status == 'fulfilled' ? result[1].value : []}
                 locations={result[2].status == 'fulfilled' ? result[2].value : []}
 

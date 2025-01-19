@@ -1,23 +1,32 @@
 'use client'
 import AppModalDialog from '@/app/components/AppModalDialog'
+import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
 import SearchInput from '@/app/components/SearchInput'
 import { selectSelectedCategory, setSelectedCategory } from '@/app/reducers/categoryReducer'
-import { selectIsLoading, selectIsOpen, setIsLoading, setIsOpen } from '@/app/reducers/uiReducer'
+import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
 import { createCategory } from '@/app/server/categoryServer'
 import { PencilSquareIcon, PlusCircleIcon, } from '@heroicons/react/24/solid'
 import { CircularProgress } from '@mui/material'
 
-import React from 'react'
+const initialState = {
+    isLoading: false,
+    message: '',
+    success: ''
+}
+
+import React, { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 function CategoryForm({ right, token}: { right: any, token:any}) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
-    const isLoading = useSelector(selectIsLoading) 
     const selectedCategory = useSelector(selectSelectedCategory)
+    const {pending} = useFormStatus()
+    const [state, formAction] = useActionState(createCategory, initialState)
     return (
         <section>
             <div
@@ -66,15 +75,13 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                 className='md:max-w-3xl max-w-7xl'
                 onClick={() => {}}
             >
-                <form  action={(formData: FormData) => {
-                    dispatch(setIsLoading(true))
-                    createCategory(formData, token)
-
-                    setTimeout(() => {
-                        dispatch(setIsLoading(false))
-                        dispatch(setIsOpen(!open))
-                    }, 2000);
-                }}
+                <AppSnackbar 
+                    open={state?.message ? true : false} 
+                    message={state?.message} 
+                    position={'top'} 
+                    severity='error'
+                />
+                <form  action={formAction}
                     className='px-4 py-6'
                 >
                     <FlexRow
@@ -90,13 +97,14 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                             value={selectedCategory?.categoryName}
                         />
                         <input hidden name="_id" value={selectedCategory?._id} />
+                        <input hidden name="token" value={token} />
                     </FlexRow>
 
                     <div
                         className='mt-4'
                     >
                         <Button 
-                        
+                            disable={pending}
                             title={
                                 <div
                                     className='flex'
@@ -107,7 +115,7 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                                     }
                                     <p>{selectedCategory? 'Edit' : 'Submit'}</p>
                                     {
-                                        isLoading? <CircularProgress size={20} />: <></>
+                                        pending? <CircularProgress size={20} />: <></>
                                     }
                                 </div>
                             }

@@ -16,10 +16,12 @@ export const getStores = async (token: any) =>{
     return data.stores
 }
 
-export async function createStore(formData:FormData) {
+export async function createStore( prevState:any, formData:FormData) {
 
     try {
+        const token = formData.get('token')
         const rawFormData = {
+            prevState,
             _id: formData.get('_id'),
             storeName: formData.get('storeName'),
             manager: formData.get('manager'),
@@ -32,18 +34,19 @@ export async function createStore(formData:FormData) {
         }
        
 
-        const { status } = await api.post('/store', rawFormData)
+        const { status } = await api.post('/store', rawFormData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
 
         if(status !== 200) {
-            throw new Error('Something went wrong')
+            return {message: 'Something went wrong'}
         }
-        // console.log(data)
-        // AsyncStorage.setItem('token', data.token)
-        // const oneDay = 24 * 60 * 60 * 1000
         
     } catch (error:any) {
-       if(error.response.data.message) throw new Error(error.response.data.message)
-       throw new Error('Error')
+       if(error.response.data.message) return {message: error.response.data.message}
+       return {message: 'Error: Something went wrong'}
     }
 
    revalidatePath('/stores')

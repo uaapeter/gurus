@@ -1,5 +1,6 @@
 'use client'
 import AppModalDialog from '@/app/components/AppModalDialog'
+import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
 import Error from '@/app/components/ErrorComponet'
 import FlexRow from '@/app/components/FlexRow'
@@ -13,14 +14,23 @@ import { CircularProgress } from '@mui/material'
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 
 
-import React, { useState } from 'react'
+import React, { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-function StoreForm({users, locations}: {users:any[], locations: any[]}) {
+const initialState = {
+    isLoading: false,
+    message: '',
+    success: ''
+}
+
+function StoreForm({users, token, locations}: {users:any[], token:any, locations: any[]}) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
-    const [isLoading, setIsLoading] = useState(false) 
     const selectedStore = useSelector(selectSelectedStore)
+
+    const {pending} = useFormStatus()
+    const [state, formAction] = useActionState(createStore, initialState)
 
     return (
         <ErrorBoundary errorComponent={Error}>
@@ -66,15 +76,13 @@ function StoreForm({users, locations}: {users:any[], locations: any[]}) {
                 className='md:max-w-1xl'
                 onClick={() => {}}
             >
-                <form action={(formData: FormData) => {
-                    setIsLoading(true)
-                    createStore(formData)
-
-                    setTimeout(() => {
-                        setIsLoading(false)
-                        dispatch(setIsOpen(!open))
-                    }, 500);
-                }}
+                <AppSnackbar 
+                    open={state?.message ? true : false} 
+                    message={state?.message} 
+                    severity='error'
+                    position={'top'} 
+                />
+                <form action={formAction}
                     className='px-4 py-6'
                 >
                     <FlexRow
@@ -89,6 +97,7 @@ function StoreForm({users, locations}: {users:any[], locations: any[]}) {
                             value={selectedStore?.storeName}
                         />
                         <input name='_id'  hidden value={selectedStore?._id} />
+                        <input name='token'  hidden value={token} />
                     </FlexRow>
                     <FlexRow
                         className='flex-col mt-4'
@@ -192,6 +201,8 @@ function StoreForm({users, locations}: {users:any[], locations: any[]}) {
                         className='mt-4'
                     >
                         <Button 
+                            disable={pending}
+                            type='submit'
                             title={
                                 <div
                                     className='flex'
@@ -202,7 +213,7 @@ function StoreForm({users, locations}: {users:any[], locations: any[]}) {
                                     }
                                     <p>{selectedStore? 'Edit Store' : 'Add Store'}</p>
                                     {
-                                        isLoading? <CircularProgress size={20} />: ''
+                                        pending? <CircularProgress size={20} />: ''
                                     }
                                 </div>
                             }

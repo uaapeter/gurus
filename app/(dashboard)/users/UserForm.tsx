@@ -1,23 +1,29 @@
 'use client'
 import AppModalDialog from '@/app/components/AppModalDialog'
+import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
 import SelectInput from '@/app/components/SelectInput'
-import { selectIsLoading, selectIsOpen, setIsLoading, setIsOpen } from '@/app/reducers/uiReducer'
+import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
 import { selectSelectedUser, setSelectedUser } from '@/app/reducers/userReducer'
 import { createUser } from '@/app/server/userServer'
 import { PencilSquareIcon, PlusCircleIcon, } from '@heroicons/react/24/solid'
 import { CircularProgress } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useActionState, useState } from 'react'
+import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
+const initialState = {
+    isLoading: false,
+    message: ''
+}
 function UserForm({stores, token}: {stores: any[], token:any}) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
     const [show, setShow] = useState(false)
     const selectedUser = useSelector(selectSelectedUser)
-    const isLoading = useSelector(selectIsLoading)
+    const {pending} = useFormStatus()
+    const [state, formAction] = useActionState(createUser, initialState)
     return (
         <section>
            
@@ -53,21 +59,15 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                 className='md:max-w-1xl'
                 onClick={() =>{}}
             >
-                <form action={
-                    (formData: FormData) => {
-                        dispatch(setIsLoading(true))
-                        createUser(formData, token)
-
-                        setTimeout(() => {
-                            dispatch(setIsLoading(false))
-                            dispatch(setIsOpen(false))
-                            
-                        }, 7000);
-
-                    }
-                }
+                <form action={formAction}
                     className='px-4 py-6'
                 >
+                    <AppSnackbar 
+                        open={state?.message ? true : false} 
+                        message={state?.message} 
+                        position={'top'} 
+                        severity='error'
+                    />
                     <FlexRow
                         className='flex-col'
                     >
@@ -81,6 +81,8 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                             value={selectedUser?.fullName}
                         />
                         <input name='_id' hidden value={selectedUser?._id} />
+                        <input name='_id' hidden value={token} />
+
                     </FlexRow>
                     <FlexRow
                         className='flex-col mt-4'
@@ -196,20 +198,23 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                         className='mt-4'
                     >
                         <Button 
-                         title={
-                            <div
-                                className='flex'
-                            >
-                                {
-                                    selectedUser ? <PencilSquareIcon className='w-4' />
-                                    :<PlusCircleIcon className='w-4' />
-                                }
-                                <p>{selectedUser? 'Edit User' : 'Add User'}</p>
-                                {
-                                    isLoading? <CircularProgress size={20} />: ''
-                                }
-                            </div>
-                        }
+                            type='submit'
+                            disable={pending}
+                            title={
+                                
+                                <div
+                                    className='flex'
+                                >
+                                    {
+                                        selectedUser ? <PencilSquareIcon className='w-4' />
+                                        :<PlusCircleIcon className='w-4' />
+                                    }
+                                    <p>{selectedUser? 'Edit User' : 'Add User'}</p>
+                                    {
+                                        pending? <CircularProgress size={20} />: ''
+                                    }
+                                </div>
+                            }
                             className='bg-primary text-white-light'
                         />
                     </div>

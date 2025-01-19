@@ -30,10 +30,12 @@ export const getProductsExpiringToday = async (token: any, indays:number) =>{
     return data.products
 }
 
-export async function createProduct(formData:FormData, token:any) {
+export async function createProduct(prevState:any, formData:FormData) {
 
     try {
+        
         const rawFormData = {
+            prevState,
             _id: formData.get('_id'),
             barcode: formData.get('barcode'),
             productBatch: formData.get('productBatch'),
@@ -49,7 +51,7 @@ export async function createProduct(formData:FormData, token:any) {
             expireDate: formData.get('expireDate'),
 
         }
-       
+       const token = formData.get('token')
 
         const { status } = await api.post('/product', rawFormData, {
             headers: {
@@ -59,15 +61,15 @@ export async function createProduct(formData:FormData, token:any) {
         })
 
         if(status !== 200) {
-            throw new Error('Something went wrong')
+           return {message: 'Something went wrong'}
         }
         // console.log(data)
         // AsyncStorage.setItem('token', data.token)
         // const oneDay = 24 * 60 * 60 * 1000
         
     } catch (error:any) {
-       if(error.response.data.message) throw new Error(error.response.data.message)
-       throw new Error('Error')
+       if(error.response.data.message) return {message: error.response.data.message}
+       return {message: 'Error: Something went wrong'}
     }
 
    revalidatePath('/products')
