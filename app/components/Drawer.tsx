@@ -73,7 +73,7 @@ function Drawer({right}:
                 
             }
             {
-                right == 'Admin' || 'Manager' ? 
+                right == 'Admin' || right == 'Manager' ? 
                 <Fragment>
                     <MenuItem
                         className={`text-sm hover:text-primary ${path ==='location' && 'bg-gray-100 text-primary'}`}
