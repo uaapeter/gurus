@@ -79,7 +79,7 @@ function PosForm({products}: {products:any[]}) {
                         <Autocomplete
                             id='product'
                             onChange={(_e, value) =>{
-                                const product = products?.find(item => item.productName === value?.split('-')[0].trim())
+                                const product = products?.find(item => item.productName?.trim() === value?.split('-')[0].trim())
                                 dispatch(setSelectedProduct(product))
                             }}
                             options={products.map((option) => `${option.productName} - ${option.category?.categoryName} (N${option.sellingPrice})`)}
