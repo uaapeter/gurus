@@ -1,5 +1,6 @@
 'use client'
 import AppModalDialog from '@/app/components/AppModalDialog'
+import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
@@ -18,14 +19,22 @@ type productType = {
     categories: any[], suppliers: any[]
 }
 
-import React from 'react'
+import React, { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
+const initialState = {
+    isLoading: false,
+    message: '',
+    success: ''
+}
 function ProductForm({token, stores, categories, suppliers, right} : productType) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
-    const isLoading = useSelector(selectIsLoading) 
+    const { pending } = useFormStatus()
     const selectedProduct = useSelector(selectSelectedProduct)
+    
+    const [state, formAction] = useActionState(createProduct, initialState)
+    
     return (
         <section>
 
@@ -77,17 +86,29 @@ function ProductForm({token, stores, categories, suppliers, right} : productType
                 className='md:max-w-1xl'
                 onClick={() =>{}}
             >
-                <form action={(formData: FormData) => {
-                    dispatch(setIsLoading(true))
-                    createProduct(formData, token)
-
-                    setTimeout(() => {
-                        dispatch(setIsLoading(false))
-                        dispatch(setIsOpen(!open))
-                    }, 2000);
-                }}
+                <form action={formAction}
                     className='px-4 py-6'
                 >
+                    {
+                        !state?.message?.status ?
+                        <AppSnackbar severity='error' 
+                            open={state?.message? true : false} 
+                            message={state?.message} 
+                            position={'top'} 
+                        />
+                        :
+                        <></>
+                    }
+                    {
+                        state?.message?.status ?
+                        <AppSnackbar severity='success' 
+                            open={state?.message?.status? true : false} 
+                            message={state?.message?.message} 
+                            position={'top'} 
+                        />
+                        :
+                        <></>
+                    }
                     <FlexRow
                         className='flex-col'
                     >
@@ -101,6 +122,8 @@ function ProductForm({token, stores, categories, suppliers, right} : productType
                             value={selectedProduct?.barcode}
                         />
                         <input hidden value={selectedProduct?._id} name="_id" />
+                        <input hidden value={token} name="token" />
+
                     </FlexRow>
                     <FlexRow
                         className='md:flex-row flex-col md:space-x-2 mt-4'
@@ -300,7 +323,7 @@ function ProductForm({token, stores, categories, suppliers, right} : productType
                                     }
                                     <p>{selectedProduct? 'Edit' : 'Submit'}</p>
                                     {
-                                        isLoading? <CircularProgress size={20} />: <></>
+                                        pending? <CircularProgress size={20} />: <></>
                                     }
                                 </div>
                             }

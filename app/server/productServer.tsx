@@ -31,8 +31,9 @@ export const getProductsExpiringToday = async (token: any, indays:number) =>{
 }
 
 export async function createProduct(prevState:any, formData:FormData) {
-
+ let result
     try {
+       
         
         const rawFormData = {
             prevState,
@@ -53,7 +54,7 @@ export async function createProduct(prevState:any, formData:FormData) {
         }
        const token = formData.get('token')
 
-        const { status } = await api.post('/product', rawFormData, {
+        const {data, status } = await api.post('/product', rawFormData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
@@ -63,16 +64,19 @@ export async function createProduct(prevState:any, formData:FormData) {
         if(status !== 200) {
            return {message: 'Something went wrong'}
         }
+        result = data
         // console.log(data)
         // AsyncStorage.setItem('token', data.token)
         // const oneDay = 24 * 60 * 60 * 1000
         
     } catch (error:any) {
-       if(error.response.data.message) return {message: error.response.data.message}
+       if(error?.response?.data?.message) return {message: error?.response?.data?.message}
+       
        return {message: 'Error: Something went wrong'}
     }
 
    revalidatePath('/products')
+   return {message: result}
    
 
 }
