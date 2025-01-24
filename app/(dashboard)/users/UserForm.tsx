@@ -68,6 +68,12 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                         position={'top'} 
                         severity='error'
                     />
+                    <AppSnackbar 
+                        open={state?.message?.status ? true : false} 
+                        message={state?.message?.message} 
+                        severity='success'
+                        position={'top'} 
+                    />
                     <FlexRow
                         className='flex-col'
                     >

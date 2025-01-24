@@ -5,7 +5,8 @@ export type uiStateProps = {
         search:string,
         success: string,
         isLoading: boolean,
-        isOpen: false
+        isOpen: false,
+        accountTab:string
     }
 }
 

@@ -69,7 +69,14 @@ function SupplierForm({token}: {token:any}) {
                             message={state?.message} 
                             position={'top'} 
                         />
+                        
                     }
+                    <AppSnackbar 
+                        open={state?.message?.status ? true : false} 
+                        message={state?.message?.message} 
+                        severity='success'
+                        position={'top'} 
+                    />
                     <FlexRow
                         className='flex-col'
                     >

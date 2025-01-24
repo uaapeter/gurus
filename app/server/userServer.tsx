@@ -160,7 +160,7 @@ export const getAllUsers = async (token:string | undefined) =>{
 
 
 export async function createUser(prevState:any, formData:FormData) {
-
+    let result
     try {
         
         const token = formData.get('token')
@@ -177,14 +177,14 @@ export async function createUser(prevState:any, formData:FormData) {
         }
 
         
-        const { status} = await api.post(`/user`, rawFormData, {
+        const { data, status} = await api.post(`/user`, rawFormData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
 
         if(status !== 200 ) return {message: 'Something went wrong'}
-
+        result = data
     } catch (error:any) {
         
         if(error?.response?.data?.message)  return {message: error?.response?.data?.message}
@@ -192,4 +192,5 @@ export async function createUser(prevState:any, formData:FormData) {
     }
 
     revalidatePath('/users')
+    return {message: result}
 }

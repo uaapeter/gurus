@@ -82,6 +82,13 @@ function StoreForm({users, token, locations}: {users:any[], token:any, locations
                     severity='error'
                     position={'top'} 
                 />
+
+                <AppSnackbar 
+                    open={state?.message?.status ? true : false} 
+                    message={state?.message?.message} 
+                    severity='success'
+                    position={'top'} 
+                />
                 <form action={formAction}
                     className='px-4 py-6'
                 >

@@ -16,7 +16,7 @@ async function SignIn() {
             className='
                 h-[80dvh] mx-auto w-[90%]
                 flex lg:max-w-2xl xs:max-w-full
-                rounded-md p-3 items-center justify-center md:flex-row flex-col bg-[#d4d4dd]
+                rounded-md p-3 items-center justify-center md:flex-row flex-col
             '
         >
             <div

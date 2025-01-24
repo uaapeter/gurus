@@ -245,6 +245,8 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                     setOpen={() =>{
                         setPrint(!isPrint)
                         dispatch(setSelectedOrder(null))
+                        dispatch(selectCart([]))
+
                     }}
                     className='md:max-w-3xl max-w-7xl'
                     onClick={() =>handlePrint()}

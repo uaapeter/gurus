@@ -34,6 +34,19 @@ export async function handleSales(formData:any, token:any, save:boolean) {
 
 
 }
+export const getBalanceSheet = async (startDate:any, endDate:any, token: any) =>{
+  
+      
+    const {data, status} = await api.get(`/order/balancesheet/${startDate}/${endDate}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+
+    if(status !== 200 ) throw new Error(data.message)
+       
+    return data.result
+}
 
 
 export const getOrders = async (token: any) =>{

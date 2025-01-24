@@ -17,8 +17,9 @@ export const getSuppliers = async (token: any) =>{
 }
 
 export async function createSupplier( prevState:any, formData:FormData) {
-
+    let result
     try {
+        
         const token =  formData.get('token')
         const rawFormData = {
             prevState,
@@ -31,7 +32,7 @@ export async function createSupplier( prevState:any, formData:FormData) {
         }
        
 
-        const { status } = await api.post('supplier', rawFormData, {
+        const { data, status } = await api.post('supplier', rawFormData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
@@ -41,9 +42,8 @@ export async function createSupplier( prevState:any, formData:FormData) {
         if(status !== 200) {
             return {message: 'Something went wrong'}
         }
-        // console.log(data)
-        // AsyncStorage.setItem('token', data.token)
-        // const oneDay = 24 * 60 * 60 * 1000
+
+       result = data
         
     } catch (error:any) {
        if(error.response.data.message) return {message: error.response.data.message}
@@ -51,6 +51,7 @@ export async function createSupplier( prevState:any, formData:FormData) {
     }
 
    revalidatePath('/suppliers')
-   
+   return {message: result}
+
 
 }

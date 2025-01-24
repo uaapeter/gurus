@@ -25,7 +25,10 @@ function SalesTable({sales}: {sales:any[]}) {
             <AppModalDialog
                 open={open}
                 title='Invoice'
-                setOpen={() =>setOpen(false)}
+                 setOpen={() =>{
+                    setOpen(false)
+                    dispatch(setSelectedOrder([]))
+                }}
                 className='max-w-7xl'
                 onClick={() =>handlePrint()}
                 btnTitle={

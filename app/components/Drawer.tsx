@@ -1,13 +1,14 @@
 'use client'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
-import { BuildingStorefrontIcon, ChartPieIcon, CubeIcon, GiftTopIcon, HomeIcon,  MapPinIcon,  NoSymbolIcon,  PowerIcon,  PresentationChartLineIcon,  
+import { BuildingStorefrontIcon, ChartPieIcon, CubeIcon, GiftTopIcon, HomeIcon,  InboxStackIcon,  MapPinIcon,  NoSymbolIcon,  PowerIcon,  PresentationChartLineIcon,  
     PuzzlePieceIcon,  TruckIcon,  UserGroupIcon,  UserIcon,} from '@heroicons/react/24/solid'
 import { Menu, Sidebar, MenuItem, useProSidebar, sidebarClasses} from 'react-pro-sidebar'
 import { usePathname } from 'next/navigation'
 import {  ShoppingCart } from '@mui/icons-material'
 import { handleLogOut } from '../server/userServer'
 import Image from 'next/image'
+import moment from 'moment'
 
 function Drawer({right}: 
     {right: string}) {
@@ -174,8 +175,19 @@ function Drawer({right}:
             >
                 Creditors
             </MenuItem>
+           
             {
                 right ==  'Admin' ?
+                <Fragment>
+
+                <MenuItem
+                    className={`text-sm hover:text-primary ${path ==='accounts' && 'bg-gray-100 text-primary'}`}
+                    component={<Link href={`/accounts/${moment(new Date()).format().split('T')[0] }/${moment(new Date()).format().split('T')[0]}`} />}
+                    icon={<InboxStackIcon className='w-5' />}
+                    title='Accounts'
+                >
+                    Accounts
+                </MenuItem>
                 <MenuItem
                     className={`text-sm text-red-500 hover:text-primary ${path ==='expired' && 'bg-gray-100 text-primary'}`}
                     component={<Link href={`/expired/${0}`} />}
@@ -184,6 +196,8 @@ function Drawer({right}:
                 >
                     Expired
                 </MenuItem>
+                
+                </Fragment>
                 :
                 <></>
             }

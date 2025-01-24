@@ -7,7 +7,8 @@ const initialState = {
     error: null,
     success: null,
     isLoading: false,
-    search: ''
+    search: '',
+    accountTab: false
 }
 
 const uiSlice = createSlice({
@@ -30,6 +31,9 @@ const uiSlice = createSlice({
         },
         setIsOpen: (state, action) => {
             state.isOpen = action.payload
+        },
+        setAccountTab: (state, action) => {
+            state.accountTab = action.payload
         }
     }
     
@@ -43,6 +47,8 @@ export const selectIsOpen = (state:uiStateProps) => state.ui.isOpen
 
 export const selectSuccess = (state: uiStateProps) => state.ui.success
 export const selectIsLoading = (state: uiStateProps) => state.ui.isLoading
+export const selectAccounTab = (state:uiStateProps) => state.ui.accountTab
+
 export const selectSearch = (state: uiStateProps) => state.ui.search
 
 export default uiSlice.reducer
