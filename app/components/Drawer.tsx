@@ -196,14 +196,7 @@ function Drawer({right}:
                 >
                     Expired
                 </MenuItem>
-                <MenuItem
-                    className={`text-sm hover:text-primary ${path ==='hmsetting' && 'bg-gray-100 text-primary'}`}
-                    component={<Link href={`/hmsetting`} />}
-                    icon={<CubeIcon className='w-5' />}
-                    title='HMS Setting'
-                >
-                    HMS Settings
-                </MenuItem>
+                
                 
                 </Fragment>
                 :

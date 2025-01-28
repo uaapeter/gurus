@@ -11,8 +11,6 @@ import { useRouter } from 'next/navigation'
 import React, { Fragment, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { sumTotal } from '../actions/sumTotalAction'
-import DateSelectionInput from '@/app/components/ReportDatepicker'
-import AppModalDialog from '@/app/components/AppModalDialog'
 
 type balanceSheetType = {
     cashierSales: any[],
@@ -24,33 +22,13 @@ type balanceSheetType = {
     changeAmount: number
 }
 
-
-
 function AccountFeed({balancesheet}: {balancesheet: balanceSheetType}) {
     const router = useRouter()
-    const [open, setOpen] = useState(false)
     const accountTab = useSelector(selectAccounTab)
-    // const [query, setQuery] = useState({
-    //     startDate: '',
-    //     endDate: ''
-    // }) 
-
     const [query, setQuery] = useState({
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection',
-    })
-
-    const handleSelect = (ranges:any) =>{
-
-        const {selection} = ranges
-        setQuery({
-            ...query,
-            startDate: selection?.startDate,
-            endDate: selection?.endDate
-        })
-    }
-
+        startDate: '',
+        endDate: ''
+    }) 
     const handleSearch = () => {
        if(!query.startDate || !query.endDate) return
         const start = moment(query.startDate).format().split('T')[0]
@@ -61,17 +39,6 @@ function AccountFeed({balancesheet}: {balancesheet: balanceSheetType}) {
     }
     return (
         <div className='w-full'>
-            <AppModalDialog
-                open={open}
-                onClick={() => { } }
-                setOpen={() => setOpen(!open)} 
-                title={'Select Date'}
-                className='md:max-w-4xl'         
-            >
-                <div className='w-full'>
-                    <DateSelectionInput months={2} selectionRange={[query]} handleSelect={handleSelect} />
-                </div>
-            </AppModalDialog>
             <section
                 className='grid sm:grid-cols-2 md:grid-cols-4 my-6 gap-x-4'
             >
@@ -86,19 +53,49 @@ function AccountFeed({balancesheet}: {balancesheet: balanceSheetType}) {
             </section>
 
             <div
-                className='text-sm justify-center flex items-center w-full mt-2 gap-x-4 pb-4'
+                className='text-sm items-center grid md:grid-cols-3 w-full mt-2 pb-4'
             >
-                
                 <div
-                    className='border px-4 py-2 rounded'
-                    onClick={() =>setOpen(!open)}
+                    className='flex items-center w-full bg-gray-200 dark:text-black'
                 >
-                   <p className='cursor-pointer'> {moment(query.startDate).format('l')} -  {moment(query.endDate).format('l')}</p>
+                    <p
+                        className='uppercase px-2'
+                    >
+                        From
+                    </p>
+                    <div
+                        className='bg-white-light flex-1'
+                    >
+                        <InputFied  
+                            type='date'
+                            noRadus
+                            value={query.startDate}
+                            handleChange={(e:any) =>setQuery({...query, startDate: e?.target?.value})}
+                        />
+                    </div>
                 </div>
 
-               
                 <div
-                    className='flex items-center bg-gray-200 ml-2'
+                    className='flex items-center w-full bg-gray-200 dark:text-black'
+                >
+                    <p
+                        className='uppercase px-2'
+                    >
+                        To
+                    </p>
+                    <div
+                        className='bg-white-light flex-1'
+                    >
+                        <InputFied  
+                            type='date'
+                            noRadus
+                            value={query.endDate}
+                            handleChange={(e:any) =>setQuery({...query, endDate: e?.target?.value})}
+                        />
+                    </div>
+                </div>
+                <div
+                    className='flex items-center w-full bg-gray-200 ml-2'
                 >
                     <div
                         className='bg-white-light md:justify-end flex-1 flex flex-row items-center'
@@ -266,8 +263,7 @@ function AccountFeed({balancesheet}: {balancesheet: balanceSheetType}) {
                             title={<div className='flex items-center'>
                                 <PrinterIcon className='w-5' />
                                 <p>Print</p>
-                            </div>} 
-                            className={'bg-primary text-white-light'}                    
+                            </div>} className={''}                    
                         />
                     </div>
                 </div>
