@@ -6,16 +6,15 @@ import Error from '@/app/components/ErrorComponet'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
 import SelectInput from '@/app/components/SelectInput'
+import { SubmitButton } from '@/app/components/SubmitButton'
 import { selectSelectedStore, setSelectedStore } from '@/app/reducers/storeReducer'
 import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
 import { createStore } from '@/app/server/storeServer'
 import { PencilSquareIcon, PlusCircleIcon } from '@heroicons/react/24/solid'
-import { CircularProgress } from '@mui/material'
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 
 
 import React, { useActionState } from 'react'
-import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 const initialState = {
@@ -29,7 +28,6 @@ function StoreForm({users, token, locations}: {users:any[], token:any, locations
     const open = useSelector(selectIsOpen)
     const selectedStore = useSelector(selectSelectedStore)
 
-    const {pending} = useFormStatus()
     const [state, formAction] = useActionState(createStore, initialState)
 
     return (
@@ -76,19 +74,26 @@ function StoreForm({users, token, locations}: {users:any[], token:any, locations
                 className='md:max-w-1xl'
                 onClick={() => {}}
             >
-                <AppSnackbar 
-                    open={state?.message ? true : false} 
-                    message={state?.message} 
-                    severity='error'
-                    position={'top'} 
-                />
-
-                <AppSnackbar 
-                    open={state?.message?.status ? true : false} 
-                    message={state?.message?.message} 
-                    severity='success'
-                    position={'top'} 
-                />
+                {
+                    !state?.message?.status ?
+                    <AppSnackbar severity='error' 
+                        open={state?.message? true : false} 
+                        message={state?.message} 
+                        position={'top'} 
+                    />
+                    :
+                    <></>
+                }
+                {
+                    state?.message?.status ?
+                    <AppSnackbar severity='success' 
+                        open={state?.message?.status? true : false} 
+                        message={state?.message?.message} 
+                        position={'top'} 
+                    />
+                    :
+                    <></>
+                }
                 <form action={formAction}
                     className='px-4 py-6'
                 >
@@ -207,9 +212,7 @@ function StoreForm({users, token, locations}: {users:any[], token:any, locations
                     <div
                         className='mt-4'
                     >
-                        <Button 
-                            disable={pending}
-                            type='submit'
+                        <SubmitButton 
                             title={
                                 <div
                                     className='flex'
@@ -219,12 +222,9 @@ function StoreForm({users, token, locations}: {users:any[], token:any, locations
                                         :<PlusCircleIcon className='w-4' />
                                     }
                                     <p>{selectedStore? 'Edit Store' : 'Add Store'}</p>
-                                    {
-                                        pending? <CircularProgress size={20} />: ''
-                                    }
+                                   
                                 </div>
                             }
-                            className='bg-primary text-white-light'
                         />
                     </div>
                 </form>

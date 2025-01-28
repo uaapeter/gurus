@@ -4,14 +4,13 @@ import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
+import { SubmitButton } from '@/app/components/SubmitButton'
 import { selectSelectedSupplier, setSelectedSupplier } from '@/app/reducers/supplierReducer'
 import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
 import { createSupplier } from '@/app/server/supplierServer'
 import { PencilSquareIcon, PlusCircleIcon, } from '@heroicons/react/24/solid'
-import { CircularProgress } from '@mui/material'
 
 import React, { useActionState } from 'react'
-import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 const initialState = {
@@ -23,7 +22,6 @@ function SupplierForm({token}: {token:any}) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
     const selectedSupplier = useSelector(selectSelectedSupplier)
-    const {pending} = useFormStatus()
     const [state, formAction] = useActionState(createSupplier, initialState)
     return (
         <section>
@@ -63,20 +61,25 @@ function SupplierForm({token}: {token:any}) {
                     className='px-4 py-6'
                 >
                     {
-                        <AppSnackbar 
-                            severity='error'
-                            open={state?.message ? true : false} 
+                        !state?.message?.status ?
+                        <AppSnackbar severity='error' 
+                            open={state?.message? true : false} 
                             message={state?.message} 
                             position={'top'} 
                         />
-                        
+                        :
+                        <></>
                     }
-                    <AppSnackbar 
-                        open={state?.message?.status ? true : false} 
-                        message={state?.message?.message} 
-                        severity='success'
-                        position={'top'} 
-                    />
+                    {
+                        state?.message?.status ?
+                        <AppSnackbar severity='success' 
+                            open={state?.message?.status? true : false} 
+                            message={state?.message?.message} 
+                            position={'top'} 
+                        />
+                        :
+                        <></>
+                    }
                     <FlexRow
                         className='flex-col'
                     >
@@ -161,8 +164,7 @@ function SupplierForm({token}: {token:any}) {
                     <div
                         className='mt-4'
                     >
-                        <Button 
-                            disable={pending}
+                        <SubmitButton 
                             title={
                                 <div
                                     className='flex'
@@ -172,12 +174,8 @@ function SupplierForm({token}: {token:any}) {
                                         :<PlusCircleIcon className='w-4' />
                                     }
                                     <p>{selectedSupplier? 'Edit' : 'Submit'}</p>
-                                    {
-                                        pending? <CircularProgress size={20} />: <></>
-                                    }
                                 </div>
                             }
-                            className='bg-primary text-white-light'
                         />
                     </div>
                 </form>

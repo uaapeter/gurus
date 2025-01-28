@@ -100,12 +100,14 @@ export async function handleLogOut() {
     redirect('/sign-in')
 }
 
-export const changePassword = async (formData:FormData) =>{
+export const changePassword = async (prevState:any, formData:FormData) =>{
     'use server'
+    let result
     try {
         const token = formData.get('token')
 
         const form = {
+            prevState,
             userId: formData.get('userId'),
             password: formData.get('password'),
             oldPassword: formData.get('oldPassword'),
@@ -118,16 +120,17 @@ export const changePassword = async (formData:FormData) =>{
             }
         })
 
-        if(status !== 201 ) throw new Error(data.message)
+        if(status !== 201 ) return {message: data.message}
         ;(await cookies()).delete('session')
         ;(await cookies()).delete('right')
-
+        result = data
+       
    } catch (error:any) {
-    if(error?.response?.data?.message)  throw new Error(error?.response?.data?.message)
-    throw new Error('Error')
+    if(error?.response?.data?.message)  return {message: error?.response?.data?.message}
+    return {message: 'Error'}
 
    }
-
+  
    redirect('/sign-in')
 
 }

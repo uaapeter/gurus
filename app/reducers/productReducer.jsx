@@ -60,12 +60,13 @@ const productSlice = createSlice({
         },
 
         addToCart: (state, action) => {
-            const {name, id, minus, input} = action.payload;
+
+
+            const {name, value, id, minus, input} = action.payload;
 
             const product = state.saleForm.find((item) =>item?.product == id)
             const index = state?.saleForm?.indexOf(product);
 
-            
 
             // state.saleForm.flatMap(item =>state.saleForm.push(item))
             // const quantity = state.saleForm[index].quantity
@@ -90,6 +91,16 @@ const productSlice = createSlice({
                 state.saleForm = updatedsaleform;
             }
 
+
+            if(name == 'attendance') {
+              
+                const updatedsaleform = state.saleForm?.flatMap((salef, i) => index == i ? Object.assign(salef, {[name]: value}): salef
+            );
+                state.saleForm = updatedsaleform;
+
+
+            }
+
             state.saleForm.flatMap((salef, i) => 
                 index == i 
                 ? Object.assign(salef, {
@@ -102,7 +113,7 @@ const productSlice = createSlice({
                 : salef
             )
 
-            // console.log(state.saleForm)
+            console.log(state.saleForm)
             
         },
         

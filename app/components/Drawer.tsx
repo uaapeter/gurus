@@ -138,7 +138,7 @@ function Drawer({right}:
                 Discount
             </MenuItem>
             {
-                right == 'Cashier' ?
+                right == 'Cashier' || 'Admin' ?
                     <MenuItem
                     className={`text-sm hover:text-primary ${path ==='pos' && 'bg-gray-100 text-primary'}`}
                     component={<Link href={`/pos`} />}
@@ -195,6 +195,14 @@ function Drawer({right}:
                     title='Expired'
                 >
                     Expired
+                </MenuItem>
+                <MenuItem
+                    className={`text-sm hover:text-primary ${path ==='hmsetting' && 'bg-gray-100 text-primary'}`}
+                    component={<Link href={`/hmsetting`} />}
+                    icon={<CubeIcon className='w-5' />}
+                    title='HMS Setting'
+                >
+                    HMS Settings
                 </MenuItem>
                 
                 </Fragment>

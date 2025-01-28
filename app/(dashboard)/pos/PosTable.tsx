@@ -24,7 +24,7 @@ import AppChip from '@/app/components/AppChip'
 import { toTitleCase } from '@/app/actions/textAction'
 import {amtToWords} from '@/app/actions/amountTowords'
 
-function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsales:any[], token:string}) {
+function PosTable({ users, token, discounts, pendingsales}: { users: any[], discounts:any[], pendingsales:any[], token:string}) {
     const dispatch = useDispatch()
     const cart = useSelector(selectCart)
     const data: any = useSelector(selectData)
@@ -88,7 +88,7 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                     orderId: orderId
                 })
             })
-           
+        //    return console.log(VALUES)
             const body = {
                 ...data,
                 orderType: 'SALE',
@@ -155,6 +155,7 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                 barcode,
                 productName,
                 product: _id,
+                attendance: '',
                 quantity: quantity > 0 ? quantity : 1,
                 sellingPrice,
                 costPrice,
@@ -308,6 +309,9 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                         <th scope="col" className="px-6 text-xs py-2">
                             Product Name
                         </th>
+                        <th scope="col" className="px-6 text-xs py-2">
+                            Attendance
+                        </th>
                     
                         <th scope="col" className="px-6 text-xs text-center">
                            Stock Qty
@@ -353,6 +357,21 @@ function PosTable({token, discounts, pendingsales}: { discounts:any[], pendingsa
                                             >
                                                {toTitleCase(productName)}
                                             </div>
+                                        </td>
+                                        <td className=' bg-gray-50'>
+                                            <SelectInput name='attendance' 
+                                                options={
+                                                    users?.flatMap(att => {
+                                                        return({
+                                                            key: `${toTitleCase(att?.fullName)}`, keyValue: att?._id
+                                                        })
+                                                    })
+                                                } 
+                                                handleChange={function (e: any): void {
+                                                    const {name, value} = e?.target
+                                                    dispatch(addToCart({name, id: product, value}))
+                                            } }                                                
+                                            />
                                         </td>
                                         <td className=' bg-gray-50'>
                                            <div>

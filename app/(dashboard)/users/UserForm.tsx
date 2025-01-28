@@ -5,13 +5,12 @@ import Button from '@/app/components/Button'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
 import SelectInput from '@/app/components/SelectInput'
+import { SubmitButton } from '@/app/components/SubmitButton'
 import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
 import { selectSelectedUser, setSelectedUser } from '@/app/reducers/userReducer'
 import { createUser } from '@/app/server/userServer'
 import { PencilSquareIcon, PlusCircleIcon, } from '@heroicons/react/24/solid'
-import { CircularProgress } from '@mui/material'
 import React, { useActionState, useState } from 'react'
-import { useFormStatus } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 const initialState = {
     isLoading: false,
@@ -22,7 +21,6 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
     const open = useSelector(selectIsOpen)
     const [show, setShow] = useState(false)
     const selectedUser = useSelector(selectSelectedUser)
-    const {pending} = useFormStatus()
     const [state, formAction] = useActionState(createUser, initialState)
     return (
         <section>
@@ -62,18 +60,26 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                 <form action={formAction}
                     className='px-4 py-6'
                 >
-                    <AppSnackbar 
-                        open={state?.message ? true : false} 
-                        message={state?.message} 
-                        position={'top'} 
-                        severity='error'
-                    />
-                    <AppSnackbar 
-                        open={state?.message?.status ? true : false} 
-                        message={state?.message?.message} 
-                        severity='success'
-                        position={'top'} 
-                    />
+                    {
+                        !state?.message?.status ?
+                        <AppSnackbar severity='error' 
+                            open={state?.message? true : false} 
+                            message={state?.message} 
+                            position={'top'} 
+                        />
+                        :
+                            <></>
+                        }
+                    {
+                        state?.message?.status ?
+                        <AppSnackbar severity='success' 
+                            open={state?.message?.status? true : false} 
+                            message={state?.message?.message} 
+                            position={'top'} 
+                        />
+                        :
+                        <></>
+                    }
                     <FlexRow
                         className='flex-col'
                     >
@@ -203,9 +209,7 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                     <div
                         className='mt-4'
                     >
-                        <Button 
-                            type='submit'
-                            disable={pending}
+                        <SubmitButton 
                             title={
                                 
                                 <div
@@ -216,12 +220,8 @@ function UserForm({stores, token}: {stores: any[], token:any}) {
                                         :<PlusCircleIcon className='w-4' />
                                     }
                                     <p>{selectedUser? 'Edit User' : 'Add User'}</p>
-                                    {
-                                        pending? <CircularProgress size={20} />: ''
-                                    }
                                 </div>
                             }
-                            className='bg-primary text-white-light'
                         />
                     </div>
                 </form>
