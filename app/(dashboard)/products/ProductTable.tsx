@@ -127,7 +127,7 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                                             </span>
                                         </td>
                                         {
-                                            right == 'Admin' ?
+                                            right == 'Admin' || right == 'Manager' ?
                                             <td className="py-3">
                                                 <div
                                                     className='flex items-center justify-center space-x-2'
