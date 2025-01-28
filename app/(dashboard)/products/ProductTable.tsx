@@ -47,7 +47,7 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                             Office
                         </th>
                         <th scope="col" className="text-xs">
-                            Status
+                            Stock Status
                         </th>
                         {
                             right == 'Admin' ?
@@ -97,38 +97,38 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                                         <td className='text-success'>
                                             {index+1}
                                         </td>
-                                        <td scope="row" className="py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <td className=" font-medium text-gray-900 dark:text-white">
                                             {toTitleCase(item?.barcode)}
                                         </td>
-                                        <td className="py-3">
+                                        <td className="line-clamp-1">
                                             {item?.productName}
                                         </td>
-                                        <td className="py-3">
+                                        <td className="">
                                             {item?.category?.categoryName}
                                         </td>
-                                        <td className="py-3 bg-red-50">
+                                        <td className="line-clamp-1 bg-red-50">
                                             { moment(item?.expireDate).format('LL')}
                                         </td>
-                                        <td className="py-3 bg-green-50">
+                                        <td className=" bg-green-50">
                                             {item?.sellingPrice?.toLocaleString()}
                                         </td>
-                                        <td className="py-3 text-center">
+                                        <td className=" text-center">
                                             {item?.cartonQty}
                                         </td>
-                                        <td className="py-3">
+                                        <td className="line-clamp-1">
                                             {item?.store?.storeName}
                                         </td>
-                                        <td className="py-3">
+                                        <td className="">
                                             <span
                                                 className={`${item?.status == 'Open' ? 'text-primary' : ''} ${item?.cartonQty > 1 ? 
                                                     'bg-primary text-white-light rounded text-xs px-1': 'bg-red-500 text-white-light rounded text-xs px-1'}`}
                                             >
-                                                {item?.cartonQty > 1 ? 'In stock' : 'Out Stock'}
+                                                {item?.cartonQty > 1 ? 'In' : 'Out'}
                                             </span>
                                         </td>
                                         {
                                             right == 'Admin' || right == 'Manager' ?
-                                            <td className="py-3">
+                                            <td className="">
                                                 <div
                                                     className='flex items-center justify-center space-x-2'
                                                 >

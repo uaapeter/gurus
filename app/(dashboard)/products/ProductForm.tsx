@@ -37,10 +37,9 @@ function ProductForm({token, stores, categories, suppliers, right} : productType
     
     return (
         <section>
-
             <div
                 className='py-4 flex items-center md:flex-row flex-col gap-y-4 md:gap-y-0 w-full justify-between 
-                border-b-[0.1px] border-b-gray-200' 
+                border-b-[0.1px] border-b-gray-200 static top-0 z-10' 
             >
                 <p
                     className='text-lg font-semibold text-black'
