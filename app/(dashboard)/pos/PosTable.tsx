@@ -509,7 +509,7 @@ function PosTable({ users, token, discounts, pendingsales}: { users: any[], disc
                                 className='py-4 mt-4 border flex items-center space-x-1 border-gray-200  sm:h-12 lg:h-8 md:h-8 px-2 rounded mb-3'
                             >
                                 <LineThrough />
-                                <p>{ cart?.lenght > 0 ? ( sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount)?.toLocaleString() : 0}</p>
+                                <p>{ cart?.length > 0 ? ( sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount)?.toLocaleString() : 0}</p>
                                
                             </div>
                         </td>
