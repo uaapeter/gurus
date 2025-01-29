@@ -36,136 +36,136 @@ async function page() {
 
     return (
         <Suspense fallback={<AppLoadingIndicator />}>
-        <PageWrapper>
-            <div 
-                className='mt-4'
-            >
-                <p className='md:text-lg text-xs'>Welcom to <span className='text-black font-semibold'>WHASTCOM POS, {toTitleCase(user?.fullName)}</span></p>
-            </div>
-            <section
-                className='grid sm:grid-cols-2 md:grid-cols-4 mb-6 gap-x-4'
-            >
-                <GridTab 
-                    title='Daily Sales' 
-                    icon={
-                        <div
-                            className='bg-primary text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <LineThrough/>
-                        </div>
-                       
-                    } 
-                    subTitle={sumTotal(currentSales, 'amount')} 
-                    url={'/orders'}      
-                    className=' bg-primary/35'          
-                
-                />
-                
-                <GridTab 
-                    title='Weekly Sales' 
-                    icon={
-                        <div
-                            className='bg-red-500 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <CreditCardIcon className='w-4 text-white-light'/>
-                        </div>
-                    } 
-                   
-                   subTitle={sumTotal(currentSales, 'amount')} 
-                    url={'/reports'}      
-                    className=' bg-red-100'          
-                
-                />
-
-                <GridTab 
-                    title='Monthly Sales Records' 
-                    icon={
-                        <div
-                            className='bg-orange-400 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <FaceSmileIcon className='w-4 text-white-light'/>
-                        </div>
-                    } 
-                   
-                    subTitle={sumTotal(invoices, 'amount')} 
-                    url={'/reports'}      
-                    className=' bg-orange-100'          
-                
-                />
-                <GridTab 
-                    title='Yearly Sales Records' 
-                    icon={
-                        <div
-                            className='bg-blue-dark text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <ShoppingBagIcon className='w-4 text-white-light'/>
-                        </div>
-                    } 
-                   
-                    subTitle={0} 
-                    url={'/reports'}      
-                    className=' bg-blue-light'          
-                
-                />
-            </section>
-            
-            <section
-                className='grid sm:grid-cols-2 md:grid-cols-2 my-6 gap-x-4 gap-y-4'
-            >
-                <GridTab 
-                    title='Today Invoice' 
-                    subTitle={currentSales?.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <UserIcon className='w-6 text-orange-200' />
-                    }
-                />
-
-                <GridTab 
-                    title='Total Invoices' 
-                    subTitle={invoices?.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <ShoppingCart fontSize='small' className='text-purple-600' />
-                    }
-                />
-
-
-
-                <GridTab 
-                    title='Available Products' 
-                    subTitle={products?.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <CalculatorIcon className='w-6 text-purple-400/50' />
-                    }
-                />
-                
-                <GridTab 
-                    title='Revenue' 
-                    subTitle={0.00} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <StarIcon  className='text-yellow-600 w-6' />
-                    }
-                />   
-
-            </section>
-
-            <section
-                className='py-2 px-2 w-full shadow rounded'
-            >
-
-                <p
-                    className='text-primary text-lg font-semibold'
+            <PageWrapper>
+                <div 
+                    className='mt-4'
                 >
-                    {`Today's`} Transactions
-                </p>
+                    <p className='md:text-lg text-xs'>Welcom to <span className='text-black font-semibold'>WHASTCOM POS, {toTitleCase(user?.fullName)}</span></p>
+                </div>
+                <section
+                    className='grid sm:grid-cols-2 md:grid-cols-4 mb-6 gap-x-4'
+                >
+                    <GridTab 
+                        title='Daily Sales' 
+                        icon={
+                            <div
+                                className='bg-primary text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <LineThrough/>
+                            </div>
+                        
+                        } 
+                        subTitle={sumTotal(currentSales, 'amount')} 
+                        url={'/orders'}      
+                        className=' bg-primary/35'          
+                    
+                    />
+                    
+                    <GridTab 
+                        title='Weekly Sales' 
+                        icon={
+                            <div
+                                className='bg-red-500 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <CreditCardIcon className='w-4 text-white-light'/>
+                            </div>
+                        } 
+                    
+                    subTitle={sumTotal(currentSales, 'amount')} 
+                        url={'/reports'}      
+                        className=' bg-red-100'          
+                    
+                    />
 
-                <SalesTable sales={currentSales} />
+                    <GridTab 
+                        title='Monthly Sales Records' 
+                        icon={
+                            <div
+                                className='bg-orange-400 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <FaceSmileIcon className='w-4 text-white-light'/>
+                            </div>
+                        } 
+                    
+                        subTitle={sumTotal(invoices, 'amount')} 
+                        url={'/reports'}      
+                        className=' bg-orange-100'          
+                    
+                    />
+                    <GridTab 
+                        title='Yearly Sales Records' 
+                        icon={
+                            <div
+                                className='bg-blue-dark text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <ShoppingBagIcon className='w-4 text-white-light'/>
+                            </div>
+                        } 
+                    
+                        subTitle={0} 
+                        url={'/reports'}      
+                        className=' bg-blue-light'          
+                    
+                    />
+                </section>
+                
+                <section
+                    className='grid sm:grid-cols-2 md:grid-cols-2 my-6 gap-x-4 gap-y-4'
+                >
+                    <GridTab 
+                        title='Today Invoice' 
+                        subTitle={currentSales?.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <UserIcon className='w-6 text-orange-200' />
+                        }
+                    />
 
-            </section>
-        </PageWrapper>
+                    <GridTab 
+                        title='Total Invoices' 
+                        subTitle={invoices?.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <ShoppingCart fontSize='small' className='text-purple-600' />
+                        }
+                    />
+
+
+
+                    <GridTab 
+                        title='Available Products' 
+                        subTitle={products?.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <CalculatorIcon className='w-6 text-purple-400/50' />
+                        }
+                    />
+                    
+                    <GridTab 
+                        title='Revenue' 
+                        subTitle={0.00} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <StarIcon  className='text-yellow-600 w-6' />
+                        }
+                    />   
+
+                </section>
+
+                <section
+                    className='py-2 px-2 w-full shadow rounded'
+                >
+
+                    <p
+                        className='text-primary text-lg font-semibold'
+                    >
+                        {`Today's`} Transactions
+                    </p>
+
+                    <SalesTable sales={currentSales} />
+
+                </section>
+            </PageWrapper>
         </Suspense>
     )
 }

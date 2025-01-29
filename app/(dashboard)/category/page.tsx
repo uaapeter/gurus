@@ -1,10 +1,11 @@
 import PageWrapper from '@/app/components/PageWrapper'
-import React from 'react'
+import React, { Suspense } from 'react'
 import CategoryTable from './CategoryTable'
 import CategoryForm from './CategoryForm'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { getCategories } from '@/app/server/categoryServer'
+import AppLoadingIndicator from '@/app/components/AppLoadingIndicator'
 
 async function page() {
     const cookieStore = await cookies()
@@ -16,16 +17,18 @@ async function page() {
     const categories = await getCategories(session?.value)
 
     return (
-        <PageWrapper>
-            <CategoryForm 
-                right={right}
-                token={session?.value} 
-            />
-            <CategoryTable 
-                right={right}
-                categories={categories} 
-            />
-        </PageWrapper>
+        <Suspense fallback={<AppLoadingIndicator />}>
+            <PageWrapper>
+                <CategoryForm 
+                    right={right}
+                    token={session?.value} 
+                />
+                <CategoryTable 
+                    right={right}
+                    categories={categories} 
+                />
+            </PageWrapper>
+        </Suspense>
     )
 }
 

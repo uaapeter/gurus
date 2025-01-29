@@ -1,10 +1,11 @@
 import PageWrapper from '@/app/components/PageWrapper'
-import React from 'react'
+import React, { Suspense } from 'react'
 import DiscountTable from './DiscountTable'
 import DiscountForm from './DiscountForm'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { getDisounts } from '@/app/server/discountServer'
+import AppLoadingIndicator from '@/app/components/AppLoadingIndicator'
 
 async function page() {
     const cookieStore = await cookies()
@@ -16,6 +17,7 @@ async function page() {
     const discounts = await getDisounts(session?.value)
 
     return (
+        <Suspense fallback={<AppLoadingIndicator />}>
         <PageWrapper>
             <DiscountForm 
                 right={right}
@@ -26,6 +28,7 @@ async function page() {
                 discounts={discounts} 
             />
         </PageWrapper>
+        </Suspense>
     )
 }
 

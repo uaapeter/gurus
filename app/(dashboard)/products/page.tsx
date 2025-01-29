@@ -1,5 +1,5 @@
 import PageWrapper from '@/app/components/PageWrapper'
-import React from 'react'
+import React, { Suspense } from 'react'
 import ProductTable from './ProductTable'
 import ProductForm from './ProductForm'
 import { cookies } from 'next/headers'
@@ -8,6 +8,7 @@ import { getCategories } from '@/app/server/categoryServer'
 import { getProducts } from '@/app/server/productServer'
 import { getSuppliers } from '@/app/server/supplierServer'
 import { getStores } from '@/app/server/storeServer'
+import AppLoadingIndicator from '@/app/components/AppLoadingIndicator'
 
 async function page() {
     const cookieStore = await cookies()
@@ -26,6 +27,7 @@ async function page() {
 
 
     return (
+        <Suspense fallback={<AppLoadingIndicator />}>
         <PageWrapper>
             <ProductForm 
                 right={right}
@@ -39,6 +41,7 @@ async function page() {
                 products={result[2].status == 'fulfilled' ? result[2].value  : []} 
             />
         </PageWrapper>
+        </Suspense>
     )
 }
 

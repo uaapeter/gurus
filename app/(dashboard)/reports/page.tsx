@@ -11,8 +11,9 @@ import { BarChart } from '@mui/icons-material'
 import moment from 'moment'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import React, {  } from 'react'
+import React, { Suspense } from 'react'
 import { sumTotal } from '../actions/sumTotalAction'
+import AppLoadingIndicator from '@/app/components/AppLoadingIndicator'
 
 async function page() {
      const cookieStore = await cookies()
@@ -29,6 +30,7 @@ async function page() {
         const currentSales = result[1].status == 'fulfilled' ? result[1].value :[]
 
     return (
+        <Suspense fallback={<AppLoadingIndicator />}>
         <PageWrapper>
             <div
                 className='flex items-center my-6'
@@ -187,6 +189,7 @@ async function page() {
                 <OrderTable orders={currentSales} />
             </section>
         </PageWrapper>
+        </Suspense>
     )
 }
 

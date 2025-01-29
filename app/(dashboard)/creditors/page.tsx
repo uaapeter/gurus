@@ -1,10 +1,11 @@
 import PageWrapper from '@/app/components/PageWrapper'
-import React from 'react'
+import React, { Suspense } from 'react'
 import OrderTable from '../../components/OrderTable'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getOrdersOnCredit } from '@/app/server/orderServer'
 import CreditorsHeader from './CreditorsHeader'
+import AppLoadingIndicator from '@/app/components/AppLoadingIndicator'
 
 async function page() {
     const cookieStore = await cookies()
@@ -16,10 +17,12 @@ async function page() {
         getOrdersOnCredit(session?.value),
     ])
     return (
-        <PageWrapper>
-            <CreditorsHeader />
-            <OrderTable orders={result[0].status == 'fulfilled' ? result[0].value : []} />
-        </PageWrapper>
+        <Suspense fallback={<AppLoadingIndicator />}>
+            <PageWrapper>
+                <CreditorsHeader />
+                <OrderTable orders={result[0].status == 'fulfilled' ? result[0].value : []} />
+            </PageWrapper>
+        </Suspense>
     )
 }
 

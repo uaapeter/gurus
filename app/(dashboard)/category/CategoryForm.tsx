@@ -46,7 +46,7 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                 </div>
 
                 {
-                    right  == 'Admin' || 'Manager' ?
+                    right  == 'Admin' || right == 'Manager' ?
                     <Button 
                         title={
                             <div
