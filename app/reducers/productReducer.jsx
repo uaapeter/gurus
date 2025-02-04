@@ -33,6 +33,7 @@ const initialState = {
         tx_date: "",
         VALUES: [],
         amount: "",
+        charge: 0,
         discount:0,
         orderOn: "",
         sale_date: "",

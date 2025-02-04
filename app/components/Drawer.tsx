@@ -137,8 +137,16 @@ function Drawer({right}:
             >
                 Discount
             </MenuItem>
+            <MenuItem
+                className={`text-sm hover:text-primary ${path ==='charges' && 'bg-gray-100 text-primary'}`}
+                component={<Link href={`/charges`} />}
+                icon={<GiftTopIcon className='w-5' />}
+                title='Charges'
+            >
+                Charges
+            </MenuItem>
             {
-                right == 'Cashier' ?
+                right == 'Cashier' || 'Admin' ?
                     <MenuItem
                     className={`text-sm hover:text-primary ${path ==='pos' && 'bg-gray-100 text-primary'}`}
                     component={<Link href={`/pos`} />}

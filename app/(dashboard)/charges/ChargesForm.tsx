@@ -2,30 +2,33 @@
 import AppModalDialog from '@/app/components/AppModalDialog'
 import AppSnackbar from '@/app/components/AppSnackbar'
 import Button from '@/app/components/Button'
+import Error from '@/app/components/ErrorComponet'
 import FlexRow from '@/app/components/FlexRow'
 import InputFied from '@/app/components/InputField'
-import SearchInput from '@/app/components/SearchInput'
+import SelectInput from '@/app/components/SelectInput'
 import { SubmitButton } from '@/app/components/SubmitButton'
 import { selectSelectedCategory, setSelectedCategory } from '@/app/reducers/categoryReducer'
 import { selectIsOpen, setIsOpen } from '@/app/reducers/uiReducer'
-import { createCategory } from '@/app/server/categoryServer'
+import { createCharge } from '@/app/server/chargesServer'
 import { PencilSquareIcon, PlusCircleIcon, } from '@heroicons/react/24/solid'
+import { ErrorBoundaryHandler } from 'next/dist/client/components/error-boundary'
 
+import React, { useActionState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 const initialState = {
     isLoading: false,
     message: '',
     success: ''
 }
 
-import React, { useActionState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-function CategoryForm({ right, token}: { right: any, token:any}) {
+function ChargesForm({ right, token}: { right: any, token:any}) {
     const dispatch = useDispatch()
     const open = useSelector(selectIsOpen)
     const selectedCategory = useSelector(selectSelectedCategory)
-    const [state, formAction] = useActionState(createCategory, initialState)
+        const [state, formAction] = useActionState(createCharge, initialState)
+    
     return (
+        <ErrorBoundaryHandler pathname='/' errorComponent={Error}>
         <section>
             <div
                 className='py-4 flex items-center w-full justify-between border-b-[0.1px] border-b-gray-200' 
@@ -33,27 +36,18 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                 <p
                     className='text-lg font-semibold text-black'
                 >
-                    Product Category List
+                    Product Discount List
                 </p>
 
-                <div
-                    className='flex-1 mx-10'
-                >
-                    <SearchInput 
-                        setSearh={() => {}} 
-                        placeholder='Search by name...' 
-                    />
-                </div>
-
                 {
-                    right  == 'Admin' || right == 'Manager' ?
+                    right  == 'Admin' || 'Manager' ?
                     <Button 
                         title={
                             <div
                                 className='flex'
                             >
                                 <PlusCircleIcon className='w-4' />
-                                <p>Add Category</p>
+                                <p>Add Charge</p>
                             </div>
                         }
                         onClick={() =>{
@@ -69,8 +63,8 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
             <AppModalDialog
                 open={open}
                 setOpen={() => dispatch(setIsOpen(!open))} 
-                title='Add Category' 
-                className='md:max-w-3xl max-w-7xl'
+                title='Add Discount' 
+                className='md:max-w-1xl'
                 onClick={() => {}}
             >
                 {
@@ -99,23 +93,55 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                     <FlexRow
                         className='flex-col'
                     >
-                        <label htmlFor="categoryName" className='text-left text-sm'>
-                            Category Name
+                        <label htmlFor="chargeName" className='text-left text-sm'>
+                            Discount Name
                         </label>
                         <InputFied 
                             height='h-12'
-                            name='categoryName'
+                            name='chargeName'
                             placeholder='Enter Name...'
-                            value={selectedCategory?.categoryName}
+                            value={selectedCategory?.chargeName}
                         />
                         <input hidden name="_id" value={selectedCategory?._id} />
                         <input hidden name="token" value={token} />
                     </FlexRow>
 
+                    <FlexRow
+                        className='flex-col mt-4'
+                    >
+                        <label htmlFor="chargeValue" className='text-left text-sm'>
+                            Discount Percentage (%)
+                        </label>
+                        <InputFied 
+                            height='h-12'
+                            type='number'
+                            name='chargeValue'
+                            placeholder='Enter Name...'
+                            value={selectedCategory?.chargeValue}
+                        />
+                        <input hidden name="_id" value={selectedCategory?._id} />
+                    </FlexRow>
+
+                    <FlexRow
+                        className='flex-col mt-4'
+                    >
+                        <label htmlFor="status" className='text-left'>
+                            Status
+                        </label>
+                        <SelectInput 
+                            options={
+                                [{  key: 'Active', keyValue: true}, {  key: 'In Active', keyValue: false}]
+                            }
+                            name='status'
+                            handleChange={() => {}}
+                            value={selectedCategory?.status}
+                        />
+                    </FlexRow>
+
                     <div
                         className='mt-4 w-full justify-center flex'
-                        >
-                        <SubmitButton
+                    >
+                        <SubmitButton 
                             title={
                                 <div
                                     className='flex'
@@ -133,7 +159,8 @@ function CategoryForm({ right, token}: { right: any, token:any}) {
                 </form>
             </AppModalDialog>
         </section>
+        </ErrorBoundaryHandler>
     )
 }
 
-export default CategoryForm
+export default ChargesForm

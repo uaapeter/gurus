@@ -1,17 +1,17 @@
 'use client'
 import { toTitleCase } from '@/app/actions/textAction'
 import { setSelectedCategory } from '@/app/reducers/categoryReducer'
-import { selectSearch, setIsOpen } from '@/app/reducers/uiReducer'
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
+import { setIsOpen } from '@/app/reducers/uiReducer'
+import { LockClosedIcon, LockOpenIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { IconButton } from '@mui/material'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 
-function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
+
+function ChargesTable({ right, charges}: { right: any, charges:any[]}) {
     const dispatch = useDispatch()
-    const search = useSelector(selectSearch)
     return (
         <div className="relative overflow-x-auto py-4">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 bg-white-light">
@@ -21,7 +21,10 @@ function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
                             S/N
                         </td>
                         <th scope="col" className="px-6 text-xs py-2">
-                            Category Name
+                            Discount Name
+                        </th>
+                        <th scope="col" className="px-6 text-xs py-2">
+                            Discount Percentage (%)
                         </th>
                     
                         <th scope="col" className="px-6 text-xs text-center">
@@ -41,14 +44,7 @@ function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
                 
                 <tbody>
                 {
-                        categories?.filter((item:any) =>{
-                            if(search == '') {
-                                return item
-                            }else if(item?.categoryName?.toLowerCase().includes(search.toLowerCase())){
-                                return item
-                            }})
-                        
-                        ?.flatMap((item:any, index:number) => {
+                        charges?.flatMap((item:any, index:number) => {
                             return (
                                 <Fragment key={(index+4)*6}>
                                     <tr
@@ -58,11 +54,23 @@ function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
                                             {index+1}
                                         </td>
                                         <td scope="row" className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {toTitleCase(item?.categoryName)}
+                                            {toTitleCase(item?.chargeName)}
+                                        </td>
+                                        <td scope="row" className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {item?.chargeValue}
                                         </td>
                                         
                                         <td className="px-2 py-3 text-center">
                                             { moment(item?.createdAt).format('LL')}
+                                        </td>
+                                        <td className="px-2 py-3 text-center">
+                                            { 
+                                                item?.status ?
+                                                <LockOpenIcon className='w-5 text-success' />
+                                                :
+                                                <LockClosedIcon className='w-5 text-red-500' />
+                                            
+                                            }
                                         </td>
                                        
                                         {
@@ -103,10 +111,10 @@ function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
                 
             </table>
             {
-                categories?.length <1 ? 
+                charges?.length <1 ? 
                 
                 <div
-                    className='w-full items-center flex justify-center text-sm py-4 text-red-500'
+                    className='w-full items-center flex justify-center text-sm py-4'
                 >
                     <p>No Data Availabe In Table</p>
                 </div>
@@ -118,4 +126,4 @@ function CategoryTable({ right, categories}: { right: any, categories:any[]}) {
     )
 }
 
-export default CategoryTable
+export default ChargesTable

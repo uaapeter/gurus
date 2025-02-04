@@ -24,7 +24,7 @@ import AppChip from '@/app/components/AppChip'
 import { toTitleCase } from '@/app/actions/textAction'
 import {amtToWords} from '@/app/actions/amountTowords'
 
-function PosTable({ users, token, discounts, pendingsales}: { users: any[], discounts:any[], pendingsales:any[], token:string}) {
+function PosTable({ users, token, charges, discounts, pendingsales}: { users: any[], charges:any[], discounts:any[], pendingsales:any[], token:string}) {
     const dispatch = useDispatch()
     const cart = useSelector(selectCart)
     const data: any = useSelector(selectData)
@@ -94,14 +94,14 @@ function PosTable({ users, token, discounts, pendingsales}: { users: any[], disc
                 orderType: 'SALE',
                 orderId,
                 amountInWords: amtToWords(sumTotal(cart, 'words')),
-                amount: data?.discount > 0 ? sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount : sumTotal(cart, 'total') ,
+                amount: data?.discount > 0 ? sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge : sumTotal(cart, 'total') + (sumTotal(cart, 'total')/100) * data?.charge ,
                 customer: {
                     customerName: data?.customerName,
                     customerPhone: data?.customerPhone,
                     customerEmail: data?.customerEmail
                 },
                 paymentMethod: data?.paymentMethod,
-                status:  sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount > parseInt(data.totalPaid) ? 'Open': 'Paid' ,
+                status:  sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge  > parseInt(data.totalPaid) ? 'Open': 'Paid' ,
                 VALUES
             }
             handleValidation(body.VALUES)
@@ -129,6 +129,9 @@ function PosTable({ users, token, discounts, pendingsales}: { users: any[], disc
             dispatch(setData({name:'customerEmail', value: ''}))
             dispatch(setData({name:'totalPaid', value: 0}))
             dispatch(setData({name:'customerEmail', value: ''}))
+            dispatch(setData({name:'discount', value: 0}))
+            dispatch(setData({name:'charge', value: 0}))
+
             dispatch(setData({name:'paymentMethod', value: 'Pending'}))
             dispatch(setIsLoading(false))
             setPrint(true)
@@ -448,7 +451,48 @@ function PosTable({ users, token, discounts, pendingsales}: { users: any[], disc
 
 
                     }
-                    
+                   
+                    <tr className='text-xs border-b'>
+                        <td colSpan={1} className='px-1 py-2 bg-white flex items-center justify-center'>
+                            <p
+                                className='text-sm mt-3'
+                            >
+                                Service Charge (s)
+                            </p>
+                        </td>
+                        <td colSpan={3} className='px-1 py-2 bg-white text-right'>
+                           
+                        </td>
+                        
+                        
+                        <td colSpan={2} className=' text-black'>
+                            {/* <div
+                                className='py-4 mt-4 border flex items-center space-x-1 border-gray-200  sm:h-12 lg:h-8 md:h-8 px-2 rounded mb-3'
+                            >
+                                <LineThrough />
+                                <p>{sumTotal(cart, 'total')?.toLocaleString()}</p>
+                               
+                            </div> */}
+                             <div
+                                className='py-4'
+                            >
+                                <SelectInput 
+                                    name={'charge'} 
+                                    value={data.charge}
+                                    options={
+                                        charges?.filter(item =>item?.status)?.flatMap(item =>{
+                                            return ({
+                                                key: `${item?.chargeName} (${item.chargeValue})`,
+                                                keyValue: item?.chargeValue
+                                            })
+                                        })
+                                    } 
+                                    handleChange={ (e:any) =>dispatch(setData({name:'charge', value: e.target.value}))}                     
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                     
                     <tr className='text-xs border-b'>
                         <td colSpan={1} className='px-1 py-2 bg-white flex items-center justify-center'>
                             <p
@@ -474,7 +518,7 @@ function PosTable({ users, token, discounts, pendingsales}: { users: any[], disc
                                 className='py-4'
                             >
                                 <SelectInput 
-                                    name={'paymentMethod'} 
+                                    name={'discount'} 
                                     value={data.paymentMethod}
                                     options={
                                         discounts?.filter(item =>item?.status)?.flatMap(item =>{
@@ -509,7 +553,7 @@ function PosTable({ users, token, discounts, pendingsales}: { users: any[], disc
                                 className='py-4 mt-4 border flex items-center space-x-1 border-gray-200  sm:h-12 lg:h-8 md:h-8 px-2 rounded mb-3'
                             >
                                 <LineThrough />
-                                <p>{ cart?.length > 0 ? ( sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount)?.toLocaleString() : 0}</p>
+                                <p>{ cart?.length > 0 ? ( sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100 ) * data.discount + sumTotal(cart, 'total')/100 * data?.charge)?.toLocaleString() : 0}</p>
                                
                             </div>
                         </td>

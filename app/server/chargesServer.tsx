@@ -2,9 +2,9 @@
 import { revalidatePath } from "next/cache"
 import { api } from "../apiHooks/api"
 
-export const getDisounts = async (token: any) =>{
+export const getCharges = async (token: any) =>{
       
-    const {data, status} = await api.get(`/discount`, {
+    const {data, status} = await api.get(`/charges`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -12,23 +12,24 @@ export const getDisounts = async (token: any) =>{
 
     if(status !== 200 ) throw new Error(data.message)
        
-    return data.discounts
+    return data.charges
 }
 
-export async function createDiscount(prevState:any, formData:FormData) {
+export async function createCharge(prevState:any, formData:FormData) {
     let result
     try {
+        
         const rawFormData = {
             prevState,
             _id: formData.get('_id'),
             status: formData.get('status'),
-            discountValue: formData.get('discountValue'),
-            discountName: formData.get('discountName'),
+            chargeValue: formData.get('chargeValue'),
+            chargeName: formData.get('chargeName'),
         }
 
         const token = formData.get('token')
        
-        const { data, status } = await api.post('/discount', rawFormData, {
+        const { data, status } = await api.post('/charges', rawFormData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
@@ -46,6 +47,6 @@ export async function createDiscount(prevState:any, formData:FormData) {
        return {message: 'Error'}
     }
 
-   revalidatePath('/discount')
+   revalidatePath('/charges')
     return {message: result}
 }
