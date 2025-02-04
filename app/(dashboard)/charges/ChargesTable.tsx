@@ -21,10 +21,10 @@ function ChargesTable({ right, charges}: { right: any, charges:any[]}) {
                             S/N
                         </td>
                         <th scope="col" className="px-6 text-xs py-2">
-                            Discount Name
+                            Charge Name
                         </th>
                         <th scope="col" className="px-6 text-xs py-2">
-                            Discount Percentage (%)
+                            Charge In Percentage (%)
                         </th>
                     
                         <th scope="col" className="px-6 text-xs text-center">

@@ -457,7 +457,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                             <p
                                 className='text-sm mt-3'
                             >
-                                Service Charge (s)
+                                Service Charge (s %)
                             </p>
                         </td>
                         <td colSpan={3} className='px-1 py-2 bg-white text-right'>

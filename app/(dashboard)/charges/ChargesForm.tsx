@@ -36,7 +36,7 @@ function ChargesForm({ right, token}: { right: any, token:any}) {
                 <p
                     className='text-lg font-semibold text-black'
                 >
-                    Product Discount List
+                    Services Charge List
                 </p>
 
                 {
@@ -63,7 +63,7 @@ function ChargesForm({ right, token}: { right: any, token:any}) {
             <AppModalDialog
                 open={open}
                 setOpen={() => dispatch(setIsOpen(!open))} 
-                title='Add Discount' 
+                title='Add Charge' 
                 className='md:max-w-1xl'
                 onClick={() => {}}
             >
@@ -94,7 +94,7 @@ function ChargesForm({ right, token}: { right: any, token:any}) {
                         className='flex-col'
                     >
                         <label htmlFor="chargeName" className='text-left text-sm'>
-                            Discount Name
+                            Charge Name
                         </label>
                         <InputFied 
                             height='h-12'
@@ -110,7 +110,7 @@ function ChargesForm({ right, token}: { right: any, token:any}) {
                         className='flex-col mt-4'
                     >
                         <label htmlFor="chargeValue" className='text-left text-sm'>
-                            Discount Percentage (%)
+                            Charege In Percentage (%)
                         </label>
                         <InputFied 
                             height='h-12'
