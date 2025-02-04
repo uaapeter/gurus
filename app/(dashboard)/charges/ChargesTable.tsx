@@ -74,7 +74,7 @@ function ChargesTable({ right, charges}: { right: any, charges:any[]}) {
                                         </td>
                                        
                                         {
-                                            right == 'Admin' ?
+                                            right == 'Admin' || right == 'Manager' ?
                                             <td className="px-2 py-3 text-center">
                                                 <div
                                                     className='flex items-center justify-center space-x-2'
