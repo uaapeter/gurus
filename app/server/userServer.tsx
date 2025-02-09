@@ -86,7 +86,7 @@ export async function hanldeLogIn(prevState:any, formData:FormData) {
        return {message: 'Something went wrong '}
     }
 
-            if(right && right == 'Admin') return redirect('/')
+            if(right && right == 'Admin' || right == 'Manager') return redirect('/')
             return redirect('/home')
    
 

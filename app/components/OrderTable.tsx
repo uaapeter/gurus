@@ -114,32 +114,32 @@ function OrderTable({orders}: {orders:any[]}) {
                                                 dispatch(setSelectedOrder(item)) 
                                                 setOpen(!open)
                                             }}
-                                            className="py-2 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900 cursor-pointer">
+                                            className="font-medium text-gray-900 whitespace-nowrap dark:text-gray-900 cursor-pointer">
                                             {item?.orderId}
                                         </td>
-                                        <td className="py-3">
+                                        <td className="">
                                             {toTitleCase(item?.customer?.customerName?item?.customer?.customerName: 'Guest')}
                                         </td>
-                                        <td className="py-3 text-center bg-green-50">
+                                        <td className="text-center bg-green-50">
                                             {item?.amount?.toLocaleString()}
                                         </td>
-                                        <td className="py-3 text-center">
+                                        <td className="text-center">
                                             {item?.discount > 0? item?.discount : <></>}
                                         </td>
-                                        <td className="py-3 text-center bg-red-50">
+                                        <td className="text-center bg-red-50">
                                             {(item?.amount)?.toLocaleString()}
                                         </td>
-                                        <td className="py-3 text-center bg-green-50">
+                                        <td className="text-center bg-green-50">
                                             {item?.totalPaid?.toLocaleString()}
                                         </td>
-                                        <td className="py-3 text-center">
+                                        <td className="text-center">
                                             {item?.paymentMethod}
                                         </td>
-                                        <td className="py-3 ">
+                                        <td className=" ">
                                            
                                             {`${ moment(item?.createdAt).format('MMM Do YY')}`}
                                         </td>
-                                        <td className="py-3 text-center">
+                                        <td className="text-center">
                                             {
                                                 item?.status =='Open' ?
                                                 <span
@@ -152,10 +152,10 @@ function OrderTable({orders}: {orders:any[]}) {
 
                                             }
                                         </td>
-                                        <td className="py-3">
+                                        <td>
                                             {item?.cashier?.fullName}
                                         </td>
-                                        <td className="py-3">
+                                        <td>
                                             <div
                                                 className='flex w-full justify-center'
                                             >

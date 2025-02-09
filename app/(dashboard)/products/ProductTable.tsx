@@ -100,22 +100,26 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                                         <td className=" font-medium text-gray-900 dark:text-white">
                                             {toTitleCase(item?.barcode)}
                                         </td>
-                                        <td className="line-clamp-1">
+                                        <td className="line-clamp-1 p-1">
                                             {item?.productName}
                                         </td>
                                         <td className="">
                                             {item?.category?.categoryName}
                                         </td>
-                                        <td className="line-clamp-1 bg-red-50">
+                                        <td className="line-clamp-1 p-1 bg-red-50">
                                             { moment(item?.expireDate).format('LL')}
                                         </td>
-                                        <td className=" bg-green-50">
-                                            {item?.sellingPrice?.toLocaleString()}
+                                        <td className="text-right pr-2 bg-green-50">
+                                        <div className='flex justify-between'>
+                                            <p className='text-red-500'> {item?.costPrice?.toLocaleString()}</p>
+                                            <p className='text-right text-black'> {item?.sellingPrice?.toLocaleString()}</p>
+
+                                        </div>
                                         </td>
                                         <td className=" text-center">
                                             {item?.cartonQty}
                                         </td>
-                                        <td className="line-clamp-1">
+                                        <td className="line-clamp-1 p-1">
                                             {item?.store?.storeName}
                                         </td>
                                         <td className="">
@@ -167,7 +171,7 @@ function ProductTable({products, right}: {products:any[], right:any}) {
                 products.length <1 ? 
                 
                 <div
-                    className='w-full items-center flex justify-center text-sm py-4'
+                    className='w-full items-center flex justify-center text-sm py-4 text-red-500'
                 >
                     <p>No Data Availabe In Table</p>
                 </div>

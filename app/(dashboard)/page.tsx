@@ -17,7 +17,7 @@ import { getCurrentSales, getOrders } from '../server/orderServer'
 import { sumTotal } from './actions/sumTotalAction'
 import { getStores } from '../server/storeServer'
 import { getSuppliers } from '../server/supplierServer'
-import { getProducts } from '../server/productServer'
+import { getProducts, getProductsExpiringToday } from '../server/productServer'
 
 async function page() {
 
@@ -33,9 +33,12 @@ async function page() {
         getStores(session?.value),
         getSuppliers(session?.value),
         getOrders(session?.value),
-        getProducts(session?.value)
+        getProducts(session?.value),      
+        getProductsExpiringToday(session?.value, 0)
+        
     ])
 
+    
     const products = result[6].status == 'fulfilled' ? result[6].value : []
     const invoices = result[5].status == 'fulfilled' ? result[5].value : []
     const suppliers = result[4].status == 'fulfilled' ? result[4].value : []
@@ -46,179 +49,178 @@ async function page() {
 
     return (
         <Suspense fallback={<AppLoadingIndicator />}>
-        <PageWrapper>
-            <div 
-                className='mt-4'
-            >
-                <p className='md:text-lg text-xs dark:text-black/50'>Welcom to <span className='text-black/50 font-semibold'>WHASTCOM POS, {toTitleCase(user?.fullName)}</span></p>
-            </div>
-            <section
-                className='grid sm:grid-cols-2 md:grid-cols-4 mb-6 gap-x-4'
-            >
-                <GridTab 
-                    title='Today Sales' 
-                    icon={
-                        <div
-                            className='bg-primary text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <LineThrough/>
-                        </div>
-                       
-                    } 
-                    subTitle={sumTotal(currentSales, 'amount')} 
-                    url={'/orders'}      
-                    className=' bg-primary/35'          
-                
-                />
-                
-                <GridTab 
-                    title='Expired' 
-                    icon={
-                        <div
-                            className='bg-red-500 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <CreditCardIcon className='w-4 text-white-light'/>
-                        </div>
-                    } 
-                   
-                    subTitle={0} 
-                    url={`/expired/${0}`}      
-                    className=' bg-red-100'          
-                
-                />
-
-                <GridTab 
-                    title='Today Invoice' 
-                    icon={
-                        <div
-                            className='bg-orange-400 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <FaceSmileIcon className='w-4 text-white-light'/>
-                        </div>
-                    } 
-                   
-                    subTitle={0} 
-                    url={'/orders'}      
-                    className=' bg-orange-100'          
-                
-                />
-                <GridTab 
-                    title='New Products' 
-                    icon={
-                        <div
-                            className='bg-blue-dark text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
-                        >
-                            <ShoppingBagIcon className='w-4 text-white-light'/>
-                        </div>
-                    } 
-                   
-                    subTitle={products.length} 
-                    url={'/products'}      
-                    className=' bg-blue-light'          
-                
-                />
-            </section>
-            
-            <section
-                className='grid sm:grid-cols-2 md:grid-cols-3 my-6 gap-x-4 gap-y-4'
-            >
-                <GridTab 
-                    title='Suppliers' 
-                    subTitle={suppliers?.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <UserIcon className='w-6 text-orange-200' />
-                    }
-                />
-
-                <GridTab 
-                    title='Invoices' 
-                    subTitle={invoices.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <ShoppingCart fontSize='small' className='text-purple-600' />
-                    }
-                />
-
-                <GridTab 
-                    title='Current Month Sales' 
-                    subTitle={sumTotal(currentSales, 'amount')} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <PercentBadgeIcon className='w-6 text-brown-400' />
-                    }
-                />
-
-                <GridTab 
-                    title='Last 3 Month Record' 
-                    subTitle={0.00} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <CalculatorIcon className='w-6 text-purple-400' />
-                    }
-                />
-
-                <GridTab 
-                    title='Last 6 Month Record Sales' 
-                    subTitle={0.00} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <CalendarDateRangeIcon className='text-blue-light w-6' />
-                    }
-                />
-
-                <GridTab 
-                    title='Users' 
-                    subTitle={users?.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <UsersIcon className='w-6 text-success' />
-                    }
-                />  
-
-
-                <GridTab 
-                    title='Available Products' 
-                    subTitle={products.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <ShoppingBagIcon className='w-6 text-orange-500' />
-                    }
-                />
-
-                <GridTab 
-                    title='Current Year Revenue' 
-                    subTitle={0.00} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <StarIcon  className='text-yellow-600 w-6' />
-                    }
-                />
-
-                <GridTab 
-                    title='Stores' 
-                    subTitle={stores?.length} 
-                    className='bg-white-light text-gray-400 shadow'          
-                    leftIcon={
-                        <BuildingStorefrontIcon className='w-6 text-purple-400' />
-                    }
-                />      
-
-            </section>
-
-            <section
-                className='py-2 px-2 w-full shadow rounded'
-            >
-                <p
-                    className='text-primary text-lg font-semibold'
+            <PageWrapper>
+                <div 
+                    className='mt-4'
                 >
-                    {`Today's`} <span className='text-red-500'>(<TodayMoment className='bg-transparent shadow-none' />)</span> Transactions
-                </p>
+                    <p className='md:text-lg text-xs dark:text-black/50'>Welcom to <span className='text-black/50 font-semibold'>WHASTCOM POS, {toTitleCase(user?.fullName)}</span></p>
+                </div>
+                <section
+                    className='grid sm:grid-cols-2 md:grid-cols-4 mb-6 gap-x-4'
+                >
+                    <GridTab 
+                        title='Today Sales' 
+                        icon={
+                            <div
+                                className='bg-primary text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <LineThrough/>
+                            </div>
+                        
+                        } 
+                        subTitle={sumTotal(currentSales, 'amount')} 
+                        url={'/orders'}      
+                        className=' bg-primary/35'          
+                    
+                    />
+                    
+                    <GridTab 
+                        title='Expired' 
+                        icon={
+                            <div
+                                className='bg-red-500 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <CreditCardIcon className='w-4 text-white-light'/>
+                            </div>
+                        } 
+                    
+                        subTitle={result[7].status == 'fulfilled' ? result[7].value?.length : 0} 
+                        url={`/expired/${0}`}      
+                        className=' bg-red-100'          
+                    />
 
-                <SalesTable sales={currentSales} />
+                    <GridTab 
+                        title='Today Invoice' 
+                        icon={
+                            <div
+                                className='bg-orange-400 text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <FaceSmileIcon className='w-4 text-white-light'/>
+                            </div>
+                        } 
+                    
+                        subTitle={currentSales?.length} 
+                        url={'/orders'}      
+                        className=' bg-orange-100'          
+                    
+                    />
+                    <GridTab 
+                        title='New Products' 
+                        icon={
+                            <div
+                                className='bg-blue-dark text-white-light text-sm h-7 w-8 flex items-center justify-center rounded-md'
+                            >
+                                <ShoppingBagIcon className='w-4 text-white-light'/>
+                            </div>
+                        } 
+                    
+                        subTitle={products.length} 
+                        url={'/products'}      
+                        className=' bg-blue-light'          
+                    
+                    />
+                </section>
+                
+                <section
+                    className='grid sm:grid-cols-2 md:grid-cols-3 my-6 gap-x-4 gap-y-4'
+                >
+                    <GridTab 
+                        title='Suppliers' 
+                        subTitle={suppliers?.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <UserIcon className='w-6 text-orange-200' />
+                        }
+                    />
 
-            </section>
-        </PageWrapper>
+                    <GridTab 
+                        title='Invoices' 
+                        subTitle={invoices.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <ShoppingCart fontSize='small' className='text-purple-600' />
+                        }
+                    />
+
+                    <GridTab 
+                        title='Current Month Sales' 
+                        subTitle={sumTotal(currentSales, 'amount')} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <PercentBadgeIcon className='w-6 text-brown-400' />
+                        }
+                    />
+
+                    <GridTab 
+                        title='Last 3 Month Record' 
+                        subTitle={0.00} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <CalculatorIcon className='w-6 text-purple-400' />
+                        }
+                    />
+
+                    <GridTab 
+                        title='Last 6 Month Record Sales' 
+                        subTitle={0.00} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <CalendarDateRangeIcon className='text-blue-light w-6' />
+                        }
+                    />
+
+                    <GridTab 
+                        title='Users' 
+                        subTitle={users?.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <UsersIcon className='w-6 text-success' />
+                        }
+                    />  
+
+
+                    <GridTab 
+                        title='Available Products' 
+                        subTitle={products.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <ShoppingBagIcon className='w-6 text-orange-500' />
+                        }
+                    />
+
+                    <GridTab 
+                        title='Current Year Revenue' 
+                        subTitle={0.00} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <StarIcon  className='text-yellow-600 w-6' />
+                        }
+                    />
+
+                    <GridTab 
+                        title='Stores' 
+                        subTitle={stores?.length} 
+                        className='bg-white-light text-gray-400 shadow'          
+                        leftIcon={
+                            <BuildingStorefrontIcon className='w-6 text-purple-400' />
+                        }
+                    />      
+
+                </section>
+
+                <section
+                    className='py-2 px-2 w-full shadow rounded'
+                >
+                    <p
+                        className='text-primary text-lg font-semibold'
+                    >
+                        {`Today's`} <span className='text-red-500'>(<TodayMoment className='bg-transparent shadow-none' />)</span> Transactions
+                    </p>
+
+                    <SalesTable sales={currentSales} />
+
+                </section>
+            </PageWrapper>
         </Suspense>
     )
 }

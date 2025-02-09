@@ -20,7 +20,8 @@ async function page({params}:{params:any}) {
         if(!hasCookie) return redirect('/sign-in')
         const session = cookieStore.get('session')
         const right = cookieStore.get('right')?.value
-        if(right !=='Admin') return redirect('/')
+        const stay = right == 'Admin' ? true : right== 'Manager' ? true :false
+        if(!stay) return redirect('/home')
 
         const { slug } = await params
 
@@ -115,7 +116,7 @@ async function page({params}:{params:any}) {
                     
                     </div>
                     <ExpiredTable 
-                        products={result[0].status == 'fulfilled' ? result[0].value : []} right={right}/>
+                        products={result[0].status == 'fulfilled' ? result[0].value : []} />
                 </section>
             </PageWrapper>
         </Suspense>

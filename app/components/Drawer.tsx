@@ -129,6 +129,19 @@ function Drawer({right}:
             >
                 Products
             </MenuItem>
+            {
+                right == 'Admin' || right == 'Manager' ?
+                    <MenuItem
+                        className={`text-sm hover:text-primary ${path ==='purchase' && 'bg-gray-100 text-primary'}`}
+                        component={<Link href={`/purchase`} />}
+                        icon={<ShoppingCart fontSize='small' />}
+                        title='Purchase'
+                    >
+                        Purchase
+                    </MenuItem>
+                :
+                <></>
+            }
             <MenuItem
                 className={`text-sm hover:text-primary ${path ==='discount' && 'bg-gray-100 text-primary'}`}
                 component={<Link href={`/discount`} />}

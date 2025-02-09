@@ -1,17 +1,9 @@
 'use client'
 import { toTitleCase } from '@/app/actions/textAction'
-import { setSelectedProduct } from '@/app/reducers/productReducer'
-import { setIsOpen } from '@/app/reducers/uiReducer'
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
-import { IconButton } from '@mui/material'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-import { useDispatch } from 'react-redux'
 
-
-
-function ExpiredTable({right, products}: {right:string, products:any[]}) {
-    const dispatch = useDispatch()
+function ExpiredTable({ products}: { products:any[]}) {
     return (
         <div className="relative overflow-x-auto py-4">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 bg-white-light">
@@ -20,31 +12,37 @@ function ExpiredTable({right, products}: {right:string, products:any[]}) {
                         <td scope="col" className="text-xs font-semibold px-1 border-l-0">
                             S/N
                         </td>
-                       
-                        <th scope="col" className="px-6 text-xs text-center py-2">
+                        <th scope="col" className="text-xs">
+                           Barcode
+                        </th>
+                        <th scope="col" className="text-xs py-2">
                             Product
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th>Category</th>
+                        <th scope="col" className="text-xs text-center">
                            Stock Qty
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                            Supplier
                         </th>
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                            Expiry Date
                         </th>
-                       
-                        <th scope="col" className="px-6 text-xs bg-green-50">
-                            Status
+                        <th scope="col" className="text-xs">
+                           Price
                         </th>
-                        <th scope="col" className="px-6 text-xs">
-                            Actions
+                       
+                        <th scope="col" className="text-xs bg-green-50">
+                            Store
+                        </th>
+                        <th scope="col" className="text-xs">
+                            Status
                         </th> 
                         {/* 
-                        <th scope="col" className="px-6 text-xs">
+                        <th scope="col" className="text-xs">
                             Date joined
                         </th> 
-                        <th scope="col" className="px-6 text-xs text-center"> 
+                        <th scope="col" className="text-xs text-center"> 
                             Action
                         </th>*/}
                     </tr>
@@ -61,28 +59,38 @@ function ExpiredTable({right, products}: {right:string, products:any[]}) {
                                     <td className='text-success'>
                                         {index+1}
                                     </td>
-                                    <td scope="row" className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <td scope="row" className="font-medium py-2 text-gray-900 whitespace-nowrap dark:text-white-light">
                                         {toTitleCase(item?.barcode)}
                                     </td>
-                                    <td className="px-2 py-3 text-center">
+                                    <td>
                                         {item?.productName}
                                     </td>
-                                    <td className="px-2 py-3 text-center">
+                                    <td>
                                         {item?.category?.categoryName}
                                     </td>
-                                    <td className="px-2 py-3 text-center bg-red-50">
-                                        { moment(item?.expireDate).format('LL')}
-                                    </td>
-                                    <td className="px-2 py-3 text-center bg-green-50">
-                                        {item?.sellingPrice?.toLocaleString()}
-                                    </td>
-                                    <td className="px-2 py-3 text-center">
+                                    <td className='text-red-500 text-center'>
                                         {item?.cartonQty}
                                     </td>
-                                    <td className="px-2 py-3 text-center">
+                                    <td>
+                                        {item?.supplier?.supplierName}
+                                    </td>
+                                    <td className="text-center bg-red-50">
+                                        { moment(item?.expireDate).format('LL')}
+                                    </td>
+                                    <td className="text-right pr-2 bg-green-50">
+                                       <div className='flex justify-between'>
+                                        <p className='text-red-500'> {item?.costPrice?.toLocaleString()}</p>
+                                        <p className='text-right text-black'> {item?.sellingPrice?.toLocaleString()}</p>
+
+                                       </div>
+                                    </td>
+                                    {/* <td className="text-left">
+                                        {item?.cartonQty}
+                                    </td> */}
+                                    <td className="">
                                         {item?.store?.storeName}
                                     </td>
-                                    <td className="px-2 py-3 text-center">
+                                    <td className="text-center">
                                         <span
                                             className={`${item?.status == 'Open' ? 'text-primary' : ''} ${item?.cartonQty > 1 ? 
                                                 'bg-primary text-white-light rounded text-xs px-1': 'bg-red-500 text-white-light rounded text-xs px-1'}`}
@@ -90,9 +98,9 @@ function ExpiredTable({right, products}: {right:string, products:any[]}) {
                                             {item?.cartonQty > 1 ? 'In stock' : 'Out Stock'}
                                         </span>
                                     </td>
-                                    {
+                                    {/* {
                                         right == 'Admin' ?
-                                        <td className="px-2 py-3 text-center">
+                                        <td className="text-center">
                                             <div
                                                 className='flex items-center justify-center space-x-2'
                                             >
@@ -118,7 +126,7 @@ function ExpiredTable({right, products}: {right:string, products:any[]}) {
                                         </td>
                                         :
                                         <></>
-                                    }
+                                    } */}
                                 </tr>
                             </Fragment>
                         )
