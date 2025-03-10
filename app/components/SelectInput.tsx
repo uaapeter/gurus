@@ -19,6 +19,7 @@ function SelectInput({value, options, noBorder, icon, name, multiple, disabled, 
             <select 
                 name={name}
                 defaultValue={value}
+                value={value}
                 disabled ={disabled ? disabled : false}
                 multiple={multiple ? multiple : false}
                 className='outline-none focus:ring-0 appearance-none text-black border-none w-full bg-transparent text-sm h-8'

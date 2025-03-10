@@ -93,7 +93,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                 ...data,
                 orderType: 'SALE',
                 orderId,
-                totalPaid: callover?.totalPaid ? parseInt(callover?.totalPaid) + parseInt(data?.totalPaid) : data?.totalPaid,
+                totalPaid: callover?.totalPaid && parseInt(callover?.totalPaid) < sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge ?  parseInt(callover?.totalPaid) + parseInt(data?.totalPaid) : callover?.totalPaid,
                 amountInWords: amtToWords(sumTotal(cart, 'words')),
                 amount: data?.discount > 0 ? sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge : sumTotal(cart, 'total') + (sumTotal(cart, 'total')/100) * data?.charge ,
                 customer: {
@@ -118,7 +118,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
         
            const save = postType == 'Save' ? true : false
 
-     
+           
            const result =  await handleSales(body, token, save)
 
            if(result?.status) {
@@ -175,12 +175,8 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
 
     useMemo(() =>{
         const unsubscribe = () => {
-         
             if(!callover) return
-            // dispatch(setData({
-            //      name: 'totalPaid',
-            //      value: 0
-            // }))
+           
            
  
             //  dispatch(setCalloverData({
@@ -208,7 +204,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
             const customer = callover?.customer
             dispatch(setData({name: 'customerName', value: customer?.customerName }))
             const itemForm = callover?.orderItems?.map((item:any) =>{
-                const {orderRow, orderId, amount, discount, total, barcode, orderType, product, productBatch, costPrice} = item
+                const {orderRow, orderId, amount, attendance, discount, total, barcode, orderType, product, productBatch, costPrice} = item
               
                 return ({
                     orderRow,
@@ -224,13 +220,19 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                     amount,
                     discount,
                     total,
+                    attendance: attendance,
                     cartonQty: product?.cartonQty
  
                 })
             })
+           
             //  setPay(true)
             // itemForm?.flatMap((item:any) =>dispatch(setCart(item)))
-            return dispatch(setCart(itemForm))
+            dispatch(setCart(itemForm))
+            dispatch(setData({
+                name: 'totalPaid',
+                value: parseInt(callover?.amount) - parseInt(callover?.totalPaid) 
+            }))
         }
             unsubscribe()
      }, [callover])
@@ -374,7 +376,8 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                                                 handleChange={function (e: any): void {
                                                     const {name, value} = e?.target
                                                     dispatch(addToCart({name, id: product, value}))
-                                            } }                                                
+                                            } }  
+                                            value={form?.attendance}                                              
                                             />
                                         </td>
                                         <td className=' bg-gray-50'>
@@ -386,7 +389,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                                             <div
                                                 className='bg-white-light mr-2 flex justify-between items-center  px-2 py-2'
                                             >
-                                                <LineThrough />
+                                                <LineThrough />  
                                                 <p> {sellingPrice?.toLocaleString()}</p>
                                             </div>
                                         </td>
@@ -596,7 +599,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                             <p
                                 className=''
                             >
-                               Amount Tender
+                               Amount Tender <span className='text-red-500'>(Paid : <LineThrough /> {callover?.totalPaid ? callover?.totalPaid?.toLocaleString() : 0})</span>
                             </p>
                         </td>
                         <td colSpan={3} className='px-1 py-2 bg-white text-right'>
@@ -611,7 +614,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                                     currency
                                     name='totalPaid'
                                     type='number'
-                                    value={data?.totalPaid}
+                                    value={ data?.totalPaid}
                                     placeholder='Enter amount paid'
                                     handleChange={ (e:any) =>dispatch(setData({name:'totalPaid', value: parseInt(e.target.value)}))}
                                 /> 
