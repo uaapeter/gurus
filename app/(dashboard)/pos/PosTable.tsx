@@ -642,7 +642,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                                             className='flex items-center'
                                         >
                                             {isLoading ? <CircularProgress size='small' /> :<></>}
-                                            <p>Save</p>
+                                            <p>Deposit</p>
                                         </div>
                                     }
                                     className='text-white-light bg-primary'
