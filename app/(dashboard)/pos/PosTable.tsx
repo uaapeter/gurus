@@ -93,7 +93,7 @@ function PosTable({ users, token, charges, discounts, pendingsales}: { users: an
                 ...data,
                 orderType: 'SALE',
                 orderId,
-                totalPaid: callover?.totalPaid && parseInt(callover?.totalPaid) < sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge ?  parseInt(callover?.totalPaid) + parseInt(data?.totalPaid) : callover?.totalPaid,
+                totalPaid: callover?.totalPaid && parseInt(callover?.totalPaid) < sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge ?  parseInt(callover?.totalPaid) + parseInt(data?.totalPaid) : callover?.totalPaid >= data?.totalPaid ?   callover?.totalPaid : data.totalPaid,
                 amountInWords: amtToWords(sumTotal(cart, 'words')),
                 amount: data?.discount > 0 ? sumTotal(cart, 'total') - (sumTotal(cart, 'total')/100) * data.discount + (sumTotal(cart, 'total')/100) * data?.charge : sumTotal(cart, 'total') + (sumTotal(cart, 'total')/100) * data?.charge ,
                 customer: {

@@ -1,6 +1,6 @@
-import { brown } from "@mui/material/colors";
 import type { Config } from "tailwindcss";
 import colors, { black, gray, green, orange, pink, purple, red, yellow } from 'tailwindcss/colors'
+import { brown } from "@mui/material/colors";
 
 
 export default {
@@ -32,6 +32,7 @@ export default {
       purple,
       brown,
       black,
+
       //   gray: {
       //     darkest: '#1f2d3d',
       //     dark: '#3c4858',
@@ -43,13 +44,12 @@ export default {
     white:{
         light: '#FFFF'
     },
-    primary: '#02b3b7',
-    secondary: '#1fc998',
-    neutral: colors.gray,
+    primary: '#042c74',
+    secondary: '#080808',
+    neutral: "#c3ccdd",
     success: '#1fc998'
 
   }
   },
-  plugins: [
-  ],
+  plugins: [],
 } satisfies Config;
