@@ -8,14 +8,17 @@ import { useReactToPrint } from 'react-to-print'
 import AppModalDialog from './AppModalDialog'
 import Invoice from './Invoice'
 import { setSelectedOrder } from '../reducers/orderReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
+import { selectSearch } from '../reducers/uiReducer'
 
 
 
 function OrderTable({orders}: {orders:any[]}) {
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
+    const search = useSelector(selectSearch)
+    
     
     const contentRef = useRef<HTMLDivElement>(null)
     const handlePrint = useReactToPrint({contentRef: contentRef})  
@@ -99,7 +102,28 @@ function OrderTable({orders}: {orders:any[]}) {
                 
                 <tbody>
                     {
-                        orders?.flatMap((item:any, index:number) => {
+                        orders?.filter((item:any) =>{
+                            if(search == '') {
+                                return item
+                            }else if(item?.orderId?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.customer?.customerName?.trim().toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.cashier?.fullName?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.createdAt?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.amount?.toString().includes(search.toString())){
+                                return item
+                            }else if(item?.totalPaid?.toString().includes(search.toString())){
+                                return item
+                            }else if(item?.paymentMethod?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }else if(item?.orderType?.toLowerCase().includes(search.toLowerCase())){
+                                return item
+                            }
+                            
+                        }).flatMap((item:any, index:number) => {
                             return (
                                 <Fragment key={(index+4)*6}>
                                     <tr
