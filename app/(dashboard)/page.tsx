@@ -18,6 +18,7 @@ import { sumTotal } from './actions/sumTotalAction'
 import { getStores } from '../server/storeServer'
 import { getSuppliers } from '../server/supplierServer'
 import { getProducts, getProductsExpiringToday } from '../server/productServer'
+import SalesChart from '../components/SalesChart'
 
 async function page() {
 
@@ -211,14 +212,20 @@ async function page() {
                 <section
                     className='py-2 px-2 w-full shadow rounded'
                 >
-                    <p
-                        className='text-primary text-lg font-semibold'
-                    >
-                        {`Today's`} <span className='text-red-500'>(<TodayMoment className='bg-transparent shadow-none' />)</span> Transactions
-                    </p>
+                    <div className='text-black/100 px-2'>
+                        <SalesChart sales={invoices}/>
+                    </div>
 
-                    <SalesTable sales={currentSales} />
+                   <div>
+                        <p
+                            className='text-primary text-lg font-semibold'
+                        >
+                            {`Today's`} <span className='text-red-500'>(<TodayMoment className='bg-transparent shadow-none' />)</span> Transactions
+                        </p>
 
+                        <SalesTable sales={currentSales} />
+
+                   </div>
                 </section>
             </PageWrapper>
         </Suspense>
