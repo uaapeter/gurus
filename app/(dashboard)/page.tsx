@@ -141,29 +141,32 @@ async function page() {
                         leftIcon={
                             <ShoppingCart fontSize='small' className='text-purple-600' />
                         }
+                        url='/orders'
                     />
 
                     <GridTab 
                         title='Current Month Sales' 
-                        subTitle={sumTotal(currentSales, 'amount')} 
+                        subTitle={sumTotal(invoices?.filter((item:any) =>new Date().getMonth()+1 === new Date(item?.createdAt).getMonth()+1 ), 'amount')} 
                         className='bg-white-light text-gray-400 shadow'          
                         leftIcon={
                             <PercentBadgeIcon className='w-6 text-brown-400' />
                         }
+                        url='/orders'
                     />
 
                     <GridTab 
-                        title='Last 3 Month Record' 
-                        subTitle={0.00} 
+                        title='Last 3 Month Sales Record' 
+                        subTitle={sumTotal(invoices, 'amount')} 
                         className='bg-white-light text-gray-400 shadow'          
                         leftIcon={
                             <CalculatorIcon className='w-6 text-purple-400' />
                         }
+                        url='/orders'
                     />
 
                     <GridTab 
-                        title='Last 6 Month Record Sales' 
-                        subTitle={0.00} 
+                        title='Last 6 Month Sales Record' 
+                        subTitle={sumTotal(invoices, 'amount')} 
                         className='bg-white-light text-gray-400 shadow'          
                         leftIcon={
                             <CalendarDateRangeIcon className='text-blue-light w-6' />
