@@ -19,6 +19,11 @@ import { getStores } from '../server/storeServer'
 import { getSuppliers } from '../server/supplierServer'
 import { getProducts, getProductsExpiringToday } from '../server/productServer'
 import SalesChart from '../components/SalesChart'
+import { Metadata } from 'next'
+export const metadata: Metadata = {
+    title: "Brecorm | Software Tech Company",
+    description: "Brecorm is a Software Tech Company, Specialize in  Business Record Management System Development",
+};
 
 async function page() {
 

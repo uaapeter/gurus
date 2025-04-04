@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "POS",
-    description: "Point of sales (POS)",
+    title: "Brecorm | Software Tech Company",
+    description: "Brecorm is a Software Tech Company, Specialize in  Business Record Management System Development",
 };
 
 export default function RootLayout({

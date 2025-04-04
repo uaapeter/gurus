@@ -23,10 +23,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "POS",
-  description: "Point of sales",
+    title: "Brecorm | Software Tech Company",
+    description: "Brecorm is a Software Tech Company, Specialize in  Business Record Management System Development",
 };
-
 
 export default async function AppRootLayout({
   children,

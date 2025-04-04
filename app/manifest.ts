@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next'
  
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'Point of Sales (POS)',
-        short_name: 'POS',
-        description: 'Inventory & Point of Sales (POS), Easy With User Friendly Interface ',
+        name: 'Brecorm',
+        short_name: 'Brecorm',
+        description: "Brecorm is a Software Tech Company, Specialize in  Business Record Management System Development",
         start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
