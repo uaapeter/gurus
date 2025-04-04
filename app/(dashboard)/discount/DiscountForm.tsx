@@ -113,7 +113,8 @@ function DiscountForm({ right, token}: { right: any, token:any}) {
                         </label>
                         <InputFied 
                             height='h-12'
-                            type='number'
+                            
+                            step={'any'}
                             name='discountValue'
                             placeholder='Enter Name...'
                             value={selectedCategory?.discountValue}
